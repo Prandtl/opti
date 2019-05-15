@@ -46,6 +46,7 @@ void multiply_matrices(float A[], float B[], float C[], int x, int y, int z) {
     #pragma parallel
     for (i = 0; i < x; i++)
     {
+        float* buffer = (float*) malloc(z * sizeof(float));
         #pragma parallel
         for (j = 0; j < z; j++)
         {
@@ -54,8 +55,11 @@ void multiply_matrices(float A[], float B[], float C[], int x, int y, int z) {
             {
                 sum = sum + A[i * y + k] * B[k * z + j];
             }
-            C[z * i + j] = sum;
+            buffer[j] = sum;
         }
+        memcpy(&C[z * i], buffer, z * sizeof(float));
+        free(buffer);
+
     }
 }
 
@@ -69,9 +73,11 @@ void main()
     double seconds;
     c0 = clock();
     generate_matrices();
-    printf("starting multiplication\n"); c1 = clock();
 
+    printf("starting multiplication\n"); c1 = clock();
     multiply_matrices(A, B, C, X, Y, Z);
+    c2 = clock(); printf("finished.\n");
+
     if (C[0] < 0)
     {
         printf("negative\n");
@@ -79,8 +85,6 @@ void main()
     else {
         printf("positive\n");
     }
-
-    c2 = clock(); printf("finished.\n");
 
     int cpu_time_used = (c2 - c1);
     int cpu_time_used_all = (c2 - c0);
