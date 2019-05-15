@@ -43,10 +43,8 @@ void print_matrice(float M[], int r, int c) {
 void multiply_matrices(float A[], float B[], float C[], int x, int y, int z) {
     int i, j, k;
     float sum;
-    #pragma parallel
     for (i = 0; i < x; i++)
     {
-        #pragma parallel
         for (j = 0; j < z; j++)
         {
             sum = 0;

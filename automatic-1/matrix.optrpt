@@ -1,0 +1,264 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+Intel(R) C Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 19.0.3.199 Build 20190206
+
+Compiler options: -o matrix.o -qopt-report=5
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: true
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: 10000
+  -inline-max-per-compile: 500000
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: main()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (main()) [1/4=25.0%] matrix.c(64,1)
+  -> EXTERN: (65,18) malloc(size_t)
+  -> EXTERN: (65,48) printf(const char *__restrict__, ...)
+  -> EXTERN: (66,18) malloc(size_t)
+  -> EXTERN: (66,48) printf(const char *__restrict__, ...)
+  -> EXTERN: (67,18) malloc(size_t)
+  -> EXTERN: (67,48) printf(const char *__restrict__, ...)
+  -> EXTERN: (71,10) clock(void)
+  -> INLINE: (72,5) generate_matrices() (isz = 86) (sz = 89)
+    -> EXTERN: (13,5) srand(unsigned int)
+    -> EXTERN: (13,21) time(long long *)
+    -> EXTERN: (19,35) rand(void)
+    -> EXTERN: (26,35) rand(void)
+  -> EXTERN: (78,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (78,47) clock(void)
+  -> INLINE: (80,5) multiply_matrices(float *, float *, float *, int, int, int) (isz = 55) (sz = 70)
+  -> EXTERN: (84,10) clock(void)
+  -> EXTERN: (84,19) printf(const char *__restrict__, ...)
+  -> EXTERN: (88,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (89,5) printf(const char *__restrict__, ...)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at matrix.c(15,5) inlined into matrix.c(72,5)
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at matrix.c(17,9) inlined into matrix.c(72,5)
+      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix.c(19,35) ]
+   LOOP END
+LOOP END
+
+LOOP BEGIN at matrix.c(22,5) inlined into matrix.c(72,5)
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at matrix.c(24,9) inlined into matrix.c(72,5)
+      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix.c(26,35) ]
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+matrix.c(64,1):remark #34051: REGISTER ALLOCATION : [main] matrix.c:64
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   11[ rax rbx rsi rdi r12-r15 zmm0-zmm2]
+        
+    Routine temporaries
+        Total         :      84
+            Global    :      40
+            Local     :      44
+        Regenerable   :      30
+        Spilled       :       6
+        
+    Routine stack
+        Variables     :      12 bytes*
+            Reads     :       2 [2.00e+00 ~ 0.0%]
+            Writes    :       2 [2.00e+00 ~ 0.0%]
+        Spills        :       8 bytes*
+            Reads     :       1 [1.00e+00 ~ 0.0%]
+            Writes    :       1 [1.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: generate_matrices()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (generate_matrices()) [2/4=50.0%] matrix.c(10,26)
+  -> EXTERN: (13,5) srand(unsigned int)
+  -> EXTERN: (13,21) time(long long *)
+  -> EXTERN: (19,35) rand(void)
+  -> EXTERN: (26,35) rand(void)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at matrix.c(15,5)
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at matrix.c(17,9)
+      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix.c(19,35) ]
+   LOOP END
+LOOP END
+
+LOOP BEGIN at matrix.c(22,5)
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at matrix.c(24,9)
+      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix.c(26,35) ]
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+matrix.c(10,26):remark #34051: REGISTER ALLOCATION : [generate_matrices] matrix.c:10
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rax rdx rcx rbx rbp rdi r13-r15 zmm0-zmm2]
+        
+    Routine temporaries
+        Total         :      43
+            Global    :      27
+            Local     :      16
+        Regenerable   :       7
+        Spilled       :       5
+        
+    Routine stack
+        Variables     :       8 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: print_matrice(float *, int, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (print_matrice(float *, int, int)) [3/4=75.0%] matrix.c(31,45)
+  -> EXTERN: (37,13) printf(const char *__restrict__, ...)
+  -> EXTERN: (39,9) printf(const char *__restrict__, ...)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at matrix.c(33,5)
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at matrix.c(35,9)
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ matrix.c(37,13) ]
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+matrix.c(31,45):remark #34051: REGISTER ALLOCATION : [print_matrice] matrix.c:31
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   13[ rax rdx rcx rbx rbp rsi rdi r8 r12-r15 zmm0]
+        
+    Routine temporaries
+        Total         :      25
+            Global    :      16
+            Local     :       9
+        Regenerable   :       5
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      64 bytes*
+            Reads     :       8 [1.44e+01 ~ 4.1%]
+            Writes    :       8 [1.44e+01 ~ 4.1%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: multiply_matrices(float *, float *, float *, int, int, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (multiply_matrices(float *, float *, float *, int, int, int)) [4/4=100.0%] matrix.c(43,78)
+
+
+    Report from: Code generation optimizations [cg]
+
+matrix.c(43,78):remark #34051: REGISTER ALLOCATION : [multiply_matrices] matrix.c:43
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       0
+            Local     :      12
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================

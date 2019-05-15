@@ -1,0 +1,292 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+Intel(R) C Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 19.0.3.199 Build 20190206
+
+Compiler options: -parallel -o matrix-no-pragma.o -qopt-report=5 -O2
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: true
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: 10000
+  -inline-max-per-compile: 500000
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: main()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (main()) [1/4=25.0%] matrix-no-pragma.c(61,1)
+  -> EXTERN: (62,18) malloc(size_t)
+  -> EXTERN: (62,48) printf(const char *__restrict__, ...)
+  -> EXTERN: (63,18) malloc(size_t)
+  -> EXTERN: (63,48) printf(const char *__restrict__, ...)
+  -> EXTERN: (64,18) malloc(size_t)
+  -> EXTERN: (64,48) printf(const char *__restrict__, ...)
+  -> EXTERN: (68,10) clock(void)
+  -> INLINE: (69,5) generate_matrices() (isz = 86) (sz = 89)
+    -> EXTERN: (13,5) srand(unsigned int)
+    -> EXTERN: (13,21) time(long long *)
+    -> EXTERN: (19,35) rand(void)
+    -> EXTERN: (26,35) rand(void)
+  -> EXTERN: (75,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (75,47) clock(void)
+  -> INLINE: (77,5) multiply_matrices(float *, float *, float *, int, int, int) (isz = 52) (sz = 67)
+  -> EXTERN: (81,10) clock(void)
+  -> EXTERN: (81,19) printf(const char *__restrict__, ...)
+  -> EXTERN: (85,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (86,5) printf(const char *__restrict__, ...)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at matrix-no-pragma.c(15,5) inlined into matrix-no-pragma.c(69,5)
+   remark #17104: loop was not parallelized: existence of parallel dependence
+   remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (19:35) and call:rand(void) (19:35)
+   remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (19:35) and call:rand(void) (19:35)
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at matrix-no-pragma.c(17,9) inlined into matrix-no-pragma.c(69,5)
+      remark #17104: loop was not parallelized: existence of parallel dependence
+      remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (19:35) and call:rand(void) (19:35)
+      remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (19:35) and call:rand(void) (19:35)
+      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix-no-pragma.c(19,35) ]
+   LOOP END
+LOOP END
+
+LOOP BEGIN at matrix-no-pragma.c(22,5) inlined into matrix-no-pragma.c(69,5)
+   remark #17104: loop was not parallelized: existence of parallel dependence
+   remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (26:35) and call:rand(void) (26:35)
+   remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (26:35) and call:rand(void) (26:35)
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at matrix-no-pragma.c(24,9) inlined into matrix-no-pragma.c(69,5)
+      remark #17104: loop was not parallelized: existence of parallel dependence
+      remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (26:35) and call:rand(void) (26:35)
+      remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (26:35) and call:rand(void) (26:35)
+      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix-no-pragma.c(26,35) ]
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+matrix-no-pragma.c(61,1):remark #34051: REGISTER ALLOCATION : [main] matrix-no-pragma.c:61
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   11[ rax rbx rsi rdi r12-r15 zmm0-zmm2]
+        
+    Routine temporaries
+        Total         :      91
+            Global    :      40
+            Local     :      51
+        Regenerable   :      37
+        Spilled       :       6
+        
+    Routine stack
+        Variables     :      12 bytes*
+            Reads     :       2 [0.00e+00 ~ 0.0%]
+            Writes    :       2 [0.00e+00 ~ 0.0%]
+        Spills        :       8 bytes*
+            Reads     :       1 [1.00e+00 ~ 0.0%]
+            Writes    :       1 [1.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: generate_matrices()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (generate_matrices()) [2/4=50.0%] matrix-no-pragma.c(10,26)
+  -> EXTERN: (13,5) srand(unsigned int)
+  -> EXTERN: (13,21) time(long long *)
+  -> EXTERN: (19,35) rand(void)
+  -> EXTERN: (26,35) rand(void)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at matrix-no-pragma.c(15,5)
+   remark #17104: loop was not parallelized: existence of parallel dependence
+   remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (19:35) and call:rand(void) (19:35)
+   remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (19:35) and call:rand(void) (19:35)
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at matrix-no-pragma.c(17,9)
+      remark #17104: loop was not parallelized: existence of parallel dependence
+      remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (19:35) and call:rand(void) (19:35)
+      remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (19:35) and call:rand(void) (19:35)
+      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix-no-pragma.c(19,35) ]
+   LOOP END
+LOOP END
+
+LOOP BEGIN at matrix-no-pragma.c(22,5)
+   remark #17104: loop was not parallelized: existence of parallel dependence
+   remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (26:35) and call:rand(void) (26:35)
+   remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (26:35) and call:rand(void) (26:35)
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at matrix-no-pragma.c(24,9)
+      remark #17104: loop was not parallelized: existence of parallel dependence
+      remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (26:35) and call:rand(void) (26:35)
+      remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (26:35) and call:rand(void) (26:35)
+      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix-no-pragma.c(26,35) ]
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+matrix-no-pragma.c(10,26):remark #34051: REGISTER ALLOCATION : [generate_matrices] matrix-no-pragma.c:10
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rax rdx rcx rbx rbp rdi r13-r15 zmm0-zmm2]
+        
+    Routine temporaries
+        Total         :      43
+            Global    :      27
+            Local     :      16
+        Regenerable   :       7
+        Spilled       :       5
+        
+    Routine stack
+        Variables     :       8 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: print_matrice(float *, int, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (print_matrice(float *, int, int)) [3/4=75.0%] matrix-no-pragma.c(31,45)
+  -> EXTERN: (37,13) printf(const char *__restrict__, ...)
+  -> EXTERN: (39,9) printf(const char *__restrict__, ...)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at matrix-no-pragma.c(33,5)
+   remark #17104: loop was not parallelized: existence of parallel dependence
+   remark #17106: parallel dependence: assumed OUTPUT dependence between call:printf(const char *__restrict__, ...) (37:13) and call:printf(const char *__restrict__, ...) (39:9)
+   remark #17106: parallel dependence: assumed OUTPUT dependence between call:printf(const char *__restrict__, ...) (39:9) and call:printf(const char *__restrict__, ...) (37:13)
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at matrix-no-pragma.c(35,9)
+      remark #17104: loop was not parallelized: existence of parallel dependence
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ matrix-no-pragma.c(37,13) ]
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+matrix-no-pragma.c(31,45):remark #34051: REGISTER ALLOCATION : [print_matrice] matrix-no-pragma.c:31
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   13[ rax rdx rcx rbx rbp rsi rdi r8 r12-r15 zmm0]
+        
+    Routine temporaries
+        Total         :      25
+            Global    :      16
+            Local     :       9
+        Regenerable   :       5
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      64 bytes*
+            Reads     :       8 [1.44e+01 ~ 4.1%]
+            Writes    :       8 [1.44e+01 ~ 4.1%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: multiply_matrices(float *, float *, float *, int, int, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (multiply_matrices(float *, float *, float *, int, int, int)) [4/4=100.0%] matrix-no-pragma.c(43,78)
+
+
+    Report from: Code generation optimizations [cg]
+
+matrix-no-pragma.c(43,78):remark #34051: REGISTER ALLOCATION : [multiply_matrices] matrix-no-pragma.c:43
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       0
+            Local     :      12
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ -nan%]
+            Writes    :       0 [0.00e+00 ~ -nan%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ -nan%]
+            Writes    :       0 [0.00e+00 ~ -nan%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
