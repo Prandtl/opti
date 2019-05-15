@@ -67,11 +67,6 @@ void main()
     double seconds;
     c0 = clock();
     generate_matrices();
-    // print_matrice(A, X, Y);
-    // printf("\n");
-    // print_matrice(B, Y, Z);
-    // printf("\n");
-
     printf("starting multiplication\n"); c1 = clock();
 
     multiply_matrices(A, B, C, X, Y, Z);
@@ -82,8 +77,6 @@ void main()
     else {
         printf("positive\n");
     }
-    // printf("\n");
-    // print_matrice(C, X, Z);
 
     c2 = clock(); printf("finished.\n");
 
@@ -92,4 +85,7 @@ void main()
     printf("multiplication took %i ticks\n", cpu_time_used);
     printf("everything took %i ticks\n", cpu_time_used_all);
 
+    free(A);
+    free(B);
+    free(C);
 }
