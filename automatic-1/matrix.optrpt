@@ -4,7 +4,7 @@ See "https://software.intel.com/en-us/intel-advisor-xe" for details.
 
 Intel(R) C Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 19.0.3.199 Build 20190206
 
-Compiler options: -o matrix.o -qopt-report=5
+Compiler options: -no-vec -o matrix.o -O2 -qopt-report=5
 
     Report from: Interprocedural optimizations [ipo]
 
@@ -32,71 +32,88 @@ Begin optimization report for: main()
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (main()) [1/4=25.0%] matrix.c(64,1)
+INLINE REPORT: (main()) [1/4=25.0%] matrix.c(63,1)
+  -> EXTERN: (64,18) malloc(size_t)
+  -> EXTERN: (64,48) printf(const char *__restrict__, ...)
   -> EXTERN: (65,18) malloc(size_t)
   -> EXTERN: (65,48) printf(const char *__restrict__, ...)
   -> EXTERN: (66,18) malloc(size_t)
   -> EXTERN: (66,48) printf(const char *__restrict__, ...)
-  -> EXTERN: (67,18) malloc(size_t)
-  -> EXTERN: (67,48) printf(const char *__restrict__, ...)
-  -> EXTERN: (71,10) clock(void)
-  -> INLINE: (72,5) generate_matrices() (isz = 86) (sz = 89)
+  -> EXTERN: (70,10) clock(void)
+  -> INLINE: (71,5) generate_matrices() (isz = 86) (sz = 89)
     -> EXTERN: (13,5) srand(unsigned int)
     -> EXTERN: (13,21) time(long long *)
     -> EXTERN: (19,35) rand(void)
     -> EXTERN: (26,35) rand(void)
-  -> EXTERN: (78,5) printf(const char *__restrict__, ...)
-  -> EXTERN: (78,47) clock(void)
-  -> INLINE: (80,5) multiply_matrices(float *, float *, float *, int, int, int) (isz = 55) (sz = 70)
-  -> EXTERN: (84,10) clock(void)
-  -> EXTERN: (84,19) printf(const char *__restrict__, ...)
-  -> EXTERN: (88,5) printf(const char *__restrict__, ...)
-  -> EXTERN: (89,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (77,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (77,47) clock(void)
+  -> INLINE: (79,5) multiply_matrices(float *, float *, float *, int, int, int) (isz = 54) (sz = 69)
+  -> EXTERN: (82,9) printf(const char *__restrict__, ...)
+  -> EXTERN: (85,9) printf(const char *__restrict__, ...)
+  -> EXTERN: (90,10) clock(void)
+  -> EXTERN: (90,19) printf(const char *__restrict__, ...)
+  -> EXTERN: (94,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (95,5) printf(const char *__restrict__, ...)
 
 
     Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
 
 
-LOOP BEGIN at matrix.c(15,5) inlined into matrix.c(72,5)
+LOOP BEGIN at matrix.c(15,5) inlined into matrix.c(71,5)
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
 
-   LOOP BEGIN at matrix.c(17,9) inlined into matrix.c(72,5)
-      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix.c(19,35) ]
+   LOOP BEGIN at matrix.c(17,9) inlined into matrix.c(71,5)
+      remark #15540: loop was not vectorized: auto-vectorization is disabled with -no-vec flag
    LOOP END
 LOOP END
 
-LOOP BEGIN at matrix.c(22,5) inlined into matrix.c(72,5)
+LOOP BEGIN at matrix.c(22,5) inlined into matrix.c(71,5)
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
 
-   LOOP BEGIN at matrix.c(24,9) inlined into matrix.c(72,5)
-      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix.c(26,35) ]
+   LOOP BEGIN at matrix.c(24,9) inlined into matrix.c(71,5)
+      remark #15540: loop was not vectorized: auto-vectorization is disabled with -no-vec flag
+   LOOP END
+LOOP END
+
+LOOP BEGIN at matrix.c(47,5) inlined into matrix.c(79,5)
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at matrix.c(50,9) inlined into matrix.c(79,5)
+      remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+      LOOP BEGIN at matrix.c(53,13) inlined into matrix.c(79,5)
+         remark #15540: loop was not vectorized: auto-vectorization is disabled with -no-vec flag
+         remark #25438: unrolled without remainder by 2  
+         remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+         remark #25457: Number of partial sums replaced: 1
+      LOOP END
    LOOP END
 LOOP END
 
     Report from: Code generation optimizations [cg]
 
-matrix.c(64,1):remark #34051: REGISTER ALLOCATION : [main] matrix.c:64
+matrix.c(63,1):remark #34051: REGISTER ALLOCATION : [main] matrix.c:63
 
     Hardware registers
         Reserved     :    2[ rsp rip]
         Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
         Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   11[ rax rbx rsi rdi r12-r15 zmm0-zmm2]
+        Assigned     :   18[ rax rdx rcx rbx rsi rdi r8-r15 zmm0-zmm3]
         
     Routine temporaries
-        Total         :      84
-            Global    :      40
-            Local     :      44
-        Regenerable   :      30
-        Spilled       :       6
+        Total         :     107
+            Global    :      50
+            Local     :      57
+        Regenerable   :      34
+        Spilled       :       7
         
     Routine stack
         Variables     :      12 bytes*
             Reads     :       2 [2.00e+00 ~ 0.0%]
             Writes    :       2 [2.00e+00 ~ 0.0%]
-        Spills        :       8 bytes*
-            Reads     :       1 [1.00e+00 ~ 0.0%]
-            Writes    :       1 [1.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       2 [2.00e+00 ~ 0.0%]
+            Writes    :       2 [2.00e+00 ~ 0.0%]
     
     Notes
     
@@ -124,7 +141,7 @@ LOOP BEGIN at matrix.c(15,5)
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
 
    LOOP BEGIN at matrix.c(17,9)
-      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix.c(19,35) ]
+      remark #15540: loop was not vectorized: auto-vectorization is disabled with -no-vec flag
    LOOP END
 LOOP END
 
@@ -132,7 +149,7 @@ LOOP BEGIN at matrix.c(22,5)
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
 
    LOOP BEGIN at matrix.c(24,9)
-      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix.c(26,35) ]
+      remark #15540: loop was not vectorized: auto-vectorization is disabled with -no-vec flag
    LOOP END
 LOOP END
 
@@ -230,6 +247,24 @@ Begin optimization report for: multiply_matrices(float *, float *, float *, int,
 INLINE REPORT: (multiply_matrices(float *, float *, float *, int, int, int)) [4/4=100.0%] matrix.c(43,78)
 
 
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at matrix.c(47,5)
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at matrix.c(50,9)
+      remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+      LOOP BEGIN at matrix.c(53,13)
+         remark #15540: loop was not vectorized: auto-vectorization is disabled with -no-vec flag
+         remark #25438: unrolled without remainder by 2  
+         remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+         remark #25457: Number of partial sums replaced: 1
+      LOOP END
+   LOOP END
+LOOP END
+
     Report from: Code generation optimizations [cg]
 
 matrix.c(43,78):remark #34051: REGISTER ALLOCATION : [multiply_matrices] matrix.c:43
@@ -238,22 +273,22 @@ matrix.c(43,78):remark #34051: REGISTER ALLOCATION : [multiply_matrices] matrix.
         Reserved     :    2[ rsp rip]
         Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
         Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
+        Assigned     :   16[ rax rdx rcx rbx rbp rsi rdi r8-r11 r15 zmm0-zmm3]
         
     Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
+        Total         :      38
+            Global    :      23
+            Local     :      15
+        Regenerable   :       3
+        Spilled       :       3
         
     Routine stack
         Variables     :       0 bytes*
             Reads     :       0 [0.00e+00 ~ 0.0%]
             Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      24 bytes*
+            Reads     :       3 [3.00e+00 ~ 0.3%]
+            Writes    :       3 [2.70e+00 ~ 0.2%]
     
     Notes
     

@@ -4,7 +4,7 @@ See "https://software.intel.com/en-us/intel-advisor-xe" for details.
 
 Intel(R) C Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 19.0.3.199 Build 20190206
 
-Compiler options: -parallel -o matrix-no-pragma.o -qopt-report=5 -O2
+Compiler options: -parallel -o matrix-noparallel.o -qopt-report=5 -O2
 
     Report from: Interprocedural optimizations [ipo]
 
@@ -32,76 +32,76 @@ Begin optimization report for: main()
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (main()) [1/4=25.0%] matrix-no-pragma.c(61,1)
-  -> EXTERN: (62,18) malloc(size_t)
-  -> EXTERN: (62,48) printf(const char *__restrict__, ...)
-  -> EXTERN: (63,18) malloc(size_t)
-  -> EXTERN: (63,48) printf(const char *__restrict__, ...)
+INLINE REPORT: (main()) [1/4=25.0%] matrix-noparallel.c(63,1)
   -> EXTERN: (64,18) malloc(size_t)
   -> EXTERN: (64,48) printf(const char *__restrict__, ...)
-  -> EXTERN: (68,10) clock(void)
-  -> INLINE: (69,5) generate_matrices() (isz = 86) (sz = 89)
+  -> EXTERN: (65,18) malloc(size_t)
+  -> EXTERN: (65,48) printf(const char *__restrict__, ...)
+  -> EXTERN: (66,18) malloc(size_t)
+  -> EXTERN: (66,48) printf(const char *__restrict__, ...)
+  -> EXTERN: (70,10) clock(void)
+  -> INLINE: (71,5) generate_matrices() (isz = 86) (sz = 89)
     -> EXTERN: (13,5) srand(unsigned int)
     -> EXTERN: (13,21) time(long long *)
     -> EXTERN: (19,35) rand(void)
     -> EXTERN: (26,35) rand(void)
-  -> EXTERN: (75,5) printf(const char *__restrict__, ...)
-  -> EXTERN: (75,47) clock(void)
-  -> INLINE: (77,5) multiply_matrices(float *, float *, float *, int, int, int) (isz = 52) (sz = 67)
-  -> EXTERN: (80,9) printf(const char *__restrict__, ...)
-  -> EXTERN: (83,9) printf(const char *__restrict__, ...)
-  -> EXTERN: (88,10) clock(void)
-  -> EXTERN: (88,19) printf(const char *__restrict__, ...)
-  -> EXTERN: (92,5) printf(const char *__restrict__, ...)
-  -> EXTERN: (93,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (77,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (77,47) clock(void)
+  -> INLINE: (79,5) multiply_matrices(float *, float *, float *, int, int, int) (isz = 54) (sz = 69)
+  -> EXTERN: (82,9) printf(const char *__restrict__, ...)
+  -> EXTERN: (85,9) printf(const char *__restrict__, ...)
+  -> EXTERN: (90,10) clock(void)
+  -> EXTERN: (90,19) printf(const char *__restrict__, ...)
+  -> EXTERN: (94,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (95,5) printf(const char *__restrict__, ...)
 
 
     Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
 
 
-LOOP BEGIN at matrix-no-pragma.c(15,5) inlined into matrix-no-pragma.c(69,5)
+LOOP BEGIN at matrix-noparallel.c(15,5) inlined into matrix-noparallel.c(71,5)
    remark #17104: loop was not parallelized: existence of parallel dependence
    remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (19:35) and call:rand(void) (19:35)
    remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (19:35) and call:rand(void) (19:35)
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
 
-   LOOP BEGIN at matrix-no-pragma.c(17,9) inlined into matrix-no-pragma.c(69,5)
+   LOOP BEGIN at matrix-noparallel.c(17,9) inlined into matrix-noparallel.c(71,5)
       remark #17104: loop was not parallelized: existence of parallel dependence
       remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (19:35) and call:rand(void) (19:35)
       remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (19:35) and call:rand(void) (19:35)
-      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix-no-pragma.c(19,35) ]
+      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix-noparallel.c(19,35) ]
    LOOP END
 LOOP END
 
-LOOP BEGIN at matrix-no-pragma.c(22,5) inlined into matrix-no-pragma.c(69,5)
+LOOP BEGIN at matrix-noparallel.c(22,5) inlined into matrix-noparallel.c(71,5)
    remark #17104: loop was not parallelized: existence of parallel dependence
    remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (26:35) and call:rand(void) (26:35)
    remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (26:35) and call:rand(void) (26:35)
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
 
-   LOOP BEGIN at matrix-no-pragma.c(24,9) inlined into matrix-no-pragma.c(69,5)
+   LOOP BEGIN at matrix-noparallel.c(24,9) inlined into matrix-noparallel.c(71,5)
       remark #17104: loop was not parallelized: existence of parallel dependence
       remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (26:35) and call:rand(void) (26:35)
       remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (26:35) and call:rand(void) (26:35)
-      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix-no-pragma.c(26,35) ]
+      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix-noparallel.c(26,35) ]
    LOOP END
 LOOP END
 
-LOOP BEGIN at matrix-no-pragma.c(46,5) inlined into matrix-no-pragma.c(77,5)
-   remark #17109: LOOP WAS AUTO-PARALLELIZED
-   remark #17101: parallel loop shared={ } private={ } firstprivate={ k j sum B A C i } lastprivate={ } firstlastprivate={ } reduction={ }
+LOOP BEGIN at matrix-noparallel.c(47,5) inlined into matrix-noparallel.c(79,5)
+   remark #17103: loop was not parallelized: noparallel directive 
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
-   remark #25015: Estimate of max trip count of loop=1000
 
-   LOOP BEGIN at matrix-no-pragma.c(48,9) inlined into matrix-no-pragma.c(77,5)
+   LOOP BEGIN at matrix-noparallel.c(50,9) inlined into matrix-noparallel.c(79,5)
+      remark #17109: LOOP WAS AUTO-PARALLELIZED
+      remark #17101: parallel loop shared={ } private={ } firstprivate={ k sum B A C j i } lastprivate={ } firstlastprivate={ } reduction={ }
       remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
       remark #25015: Estimate of max trip count of loop=1000
 
-      LOOP BEGIN at matrix-no-pragma.c(51,13) inlined into matrix-no-pragma.c(77,5)
-         remark #15389: vectorization support: reference A[i*1000+k] has unaligned access   [ matrix-no-pragma.c(53,29) ]
+      LOOP BEGIN at matrix-noparallel.c(53,13) inlined into matrix-noparallel.c(79,5)
+         remark #15389: vectorization support: reference A[i*1000+k] has unaligned access   [ matrix-noparallel.c(55,29) ]
          remark #15381: vectorization support: unaligned access used inside loop body
          remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
-         remark #15328: vectorization support: non-unit strided load was emulated for the variable <B[k*1000+j]>, stride is 1000   [ matrix-no-pragma.c(53,44) ]
+         remark #15328: vectorization support: non-unit strided load was emulated for the variable <B[k*1000+j]>, stride is 1000   [ matrix-noparallel.c(55,44) ]
          remark #15305: vectorization support: vector length 4
          remark #15399: vectorization support: unroll factor set to 4
          remark #15309: vectorization support: normalized vectorization overhead 0.207
@@ -120,42 +120,36 @@ LOOP BEGIN at matrix-no-pragma.c(46,5) inlined into matrix-no-pragma.c(77,5)
    LOOP END
 LOOP END
 
-LOOP BEGIN at matrix-no-pragma.c(46,5) inlined into matrix-no-pragma.c(77,5)
+LOOP BEGIN at matrix-noparallel.c(50,9) inlined into matrix-noparallel.c(79,5)
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
    remark #25015: Estimate of max trip count of loop=1000
 
-   LOOP BEGIN at matrix-no-pragma.c(48,9) inlined into matrix-no-pragma.c(77,5)
+   LOOP BEGIN at matrix-noparallel.c(53,13) inlined into matrix-noparallel.c(79,5)
       remark #17107: loop was not parallelized: inner loop
-      remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+      remark #15389: vectorization support: reference A[i*1000+k] has unaligned access   [ matrix-noparallel.c(55,29) ]
+      remark #15381: vectorization support: unaligned access used inside loop body
+      remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+      remark #15328: vectorization support: non-unit strided load was emulated for the variable <B[k*1000+j]>, stride is 1000   [ matrix-noparallel.c(55,44) ]
+      remark #15305: vectorization support: vector length 4
+      remark #15399: vectorization support: unroll factor set to 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.207
+      remark #15450: unmasked unaligned unit stride loads: 1 
+      remark #15452: unmasked strided loads: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 8 
+      remark #15477: vector cost: 10.250 
+      remark #15478: estimated potential speedup: 0.770 
+      remark #15488: --- end vector cost summary ---
+      remark #25438: unrolled without remainder by 2  
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+      remark #25457: Number of partial sums replaced: 1
       remark #25015: Estimate of max trip count of loop=1000
-
-      LOOP BEGIN at matrix-no-pragma.c(51,13) inlined into matrix-no-pragma.c(77,5)
-         remark #17107: loop was not parallelized: inner loop
-         remark #15389: vectorization support: reference A[i*1000+k] has unaligned access   [ matrix-no-pragma.c(53,29) ]
-         remark #15381: vectorization support: unaligned access used inside loop body
-         remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
-         remark #15328: vectorization support: non-unit strided load was emulated for the variable <B[k*1000+j]>, stride is 1000   [ matrix-no-pragma.c(53,44) ]
-         remark #15305: vectorization support: vector length 4
-         remark #15399: vectorization support: unroll factor set to 4
-         remark #15309: vectorization support: normalized vectorization overhead 0.207
-         remark #15450: unmasked unaligned unit stride loads: 1 
-         remark #15452: unmasked strided loads: 1 
-         remark #15475: --- begin vector cost summary ---
-         remark #15476: scalar cost: 8 
-         remark #15477: vector cost: 10.250 
-         remark #15478: estimated potential speedup: 0.770 
-         remark #15488: --- end vector cost summary ---
-         remark #25438: unrolled without remainder by 2  
-         remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
-         remark #25457: Number of partial sums replaced: 1
-         remark #25015: Estimate of max trip count of loop=1000
-      LOOP END
    LOOP END
 LOOP END
 
     Report from: Code generation optimizations [cg]
 
-matrix-no-pragma.c(61,1):remark #34051: REGISTER ALLOCATION : [main] matrix-no-pragma.c:61
+matrix-noparallel.c(63,1):remark #34051: REGISTER ALLOCATION : [main] matrix-noparallel.c:63
 
     Hardware registers
         Reserved     :    2[ rsp rip]
@@ -164,19 +158,19 @@ matrix-no-pragma.c(61,1):remark #34051: REGISTER ALLOCATION : [main] matrix-no-p
         Assigned     :   18[ rax rdx rcx rbx rsi rdi r8-r15 zmm0-zmm3]
         
     Routine temporaries
-        Total         :     208
-            Global    :      76
+        Total         :     204
+            Global    :      72
             Local     :     132
-        Regenerable   :      77
-        Spilled       :       7
+        Regenerable   :      78
+        Spilled       :       6
         
     Routine stack
-        Variables     :      68 bytes*
-            Reads     :       4 [8.20e+00 ~ 0.0%]
-            Writes    :      13 [0.00e+00 ~ 0.0%]
-        Spills        :      96 bytes*
-            Reads     :      18 [1.93e+01 ~ 0.0%]
-            Writes    :      18 [8.00e+00 ~ 0.0%]
+        Variables     :      72 bytes*
+            Reads     :       4 [4.50e+01 ~ 0.0%]
+            Writes    :      14 [0.00e+00 ~ 0.0%]
+        Spills        :      88 bytes*
+            Reads     :      19 [9.00e+00 ~ 0.0%]
+            Writes    :      20 [4.00e+00 ~ 0.0%]
     
     Notes
     
@@ -190,7 +184,7 @@ Begin optimization report for: generate_matrices()
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (generate_matrices()) [2/4=50.0%] matrix-no-pragma.c(10,26)
+INLINE REPORT: (generate_matrices()) [2/4=50.0%] matrix-noparallel.c(10,26)
   -> EXTERN: (13,5) srand(unsigned int)
   -> EXTERN: (13,21) time(long long *)
   -> EXTERN: (19,35) rand(void)
@@ -200,37 +194,37 @@ INLINE REPORT: (generate_matrices()) [2/4=50.0%] matrix-no-pragma.c(10,26)
     Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
 
 
-LOOP BEGIN at matrix-no-pragma.c(15,5)
+LOOP BEGIN at matrix-noparallel.c(15,5)
    remark #17104: loop was not parallelized: existence of parallel dependence
    remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (19:35) and call:rand(void) (19:35)
    remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (19:35) and call:rand(void) (19:35)
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
 
-   LOOP BEGIN at matrix-no-pragma.c(17,9)
+   LOOP BEGIN at matrix-noparallel.c(17,9)
       remark #17104: loop was not parallelized: existence of parallel dependence
       remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (19:35) and call:rand(void) (19:35)
       remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (19:35) and call:rand(void) (19:35)
-      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix-no-pragma.c(19,35) ]
+      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix-noparallel.c(19,35) ]
    LOOP END
 LOOP END
 
-LOOP BEGIN at matrix-no-pragma.c(22,5)
+LOOP BEGIN at matrix-noparallel.c(22,5)
    remark #17104: loop was not parallelized: existence of parallel dependence
    remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (26:35) and call:rand(void) (26:35)
    remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (26:35) and call:rand(void) (26:35)
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
 
-   LOOP BEGIN at matrix-no-pragma.c(24,9)
+   LOOP BEGIN at matrix-noparallel.c(24,9)
       remark #17104: loop was not parallelized: existence of parallel dependence
       remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (26:35) and call:rand(void) (26:35)
       remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (26:35) and call:rand(void) (26:35)
-      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix-no-pragma.c(26,35) ]
+      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix-noparallel.c(26,35) ]
    LOOP END
 LOOP END
 
     Report from: Code generation optimizations [cg]
 
-matrix-no-pragma.c(10,26):remark #34051: REGISTER ALLOCATION : [generate_matrices] matrix-no-pragma.c:10
+matrix-noparallel.c(10,26):remark #34051: REGISTER ALLOCATION : [generate_matrices] matrix-noparallel.c:10
 
     Hardware registers
         Reserved     :    2[ rsp rip]
@@ -265,7 +259,7 @@ Begin optimization report for: print_matrice(float *, int, int)
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (print_matrice(float *, int, int)) [3/4=75.0%] matrix-no-pragma.c(31,45)
+INLINE REPORT: (print_matrice(float *, int, int)) [3/4=75.0%] matrix-noparallel.c(31,45)
   -> EXTERN: (37,13) printf(const char *__restrict__, ...)
   -> EXTERN: (39,9) printf(const char *__restrict__, ...)
 
@@ -273,22 +267,22 @@ INLINE REPORT: (print_matrice(float *, int, int)) [3/4=75.0%] matrix-no-pragma.c
     Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
 
 
-LOOP BEGIN at matrix-no-pragma.c(33,5)
+LOOP BEGIN at matrix-noparallel.c(33,5)
    remark #17104: loop was not parallelized: existence of parallel dependence
    remark #17106: parallel dependence: assumed OUTPUT dependence between call:printf(const char *__restrict__, ...) (37:13) and call:printf(const char *__restrict__, ...) (39:9)
    remark #17106: parallel dependence: assumed OUTPUT dependence between call:printf(const char *__restrict__, ...) (39:9) and call:printf(const char *__restrict__, ...) (37:13)
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
 
-   LOOP BEGIN at matrix-no-pragma.c(35,9)
+   LOOP BEGIN at matrix-noparallel.c(35,9)
       remark #17104: loop was not parallelized: existence of parallel dependence
-      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ matrix-no-pragma.c(37,13) ]
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ matrix-noparallel.c(37,13) ]
       remark #15344: loop was not vectorized: vector dependence prevents vectorization
    LOOP END
 LOOP END
 
     Report from: Code generation optimizations [cg]
 
-matrix-no-pragma.c(31,45):remark #34051: REGISTER ALLOCATION : [print_matrice] matrix-no-pragma.c:31
+matrix-noparallel.c(31,45):remark #34051: REGISTER ALLOCATION : [print_matrice] matrix-noparallel.c:31
 
     Hardware registers
         Reserved     :    2[ rsp rip]
@@ -323,27 +317,27 @@ Begin optimization report for: multiply_matrices(float *, float *, float *, int,
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (multiply_matrices(float *, float *, float *, int, int, int)) [4/4=100.0%] matrix-no-pragma.c(43,78)
+INLINE REPORT: (multiply_matrices(float *, float *, float *, int, int, int)) [4/4=100.0%] matrix-noparallel.c(43,78)
 
 
     Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
 
 
-LOOP BEGIN at matrix-no-pragma.c(46,5)
-   remark #17109: LOOP WAS AUTO-PARALLELIZED
-   remark #17101: parallel loop shared={ } private={ } firstprivate={ k j sum B A C i } lastprivate={ } firstlastprivate={ } reduction={ }
+LOOP BEGIN at matrix-noparallel.c(47,5)
+   remark #17103: loop was not parallelized: noparallel directive 
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
-   remark #25015: Estimate of max trip count of loop=1000
 
-   LOOP BEGIN at matrix-no-pragma.c(48,9)
+   LOOP BEGIN at matrix-noparallel.c(50,9)
+      remark #17109: LOOP WAS AUTO-PARALLELIZED
+      remark #17101: parallel loop shared={ } private={ } firstprivate={ k sum B A C j i } lastprivate={ } firstlastprivate={ } reduction={ }
       remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
       remark #25015: Estimate of max trip count of loop=1000
 
-      LOOP BEGIN at matrix-no-pragma.c(51,13)
-         remark #15389: vectorization support: reference A[i*1000+k] has unaligned access   [ matrix-no-pragma.c(53,29) ]
+      LOOP BEGIN at matrix-noparallel.c(53,13)
+         remark #15389: vectorization support: reference A[i*1000+k] has unaligned access   [ matrix-noparallel.c(55,29) ]
          remark #15381: vectorization support: unaligned access used inside loop body
          remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
-         remark #15328: vectorization support: non-unit strided load was emulated for the variable <B[k*1000+j]>, stride is 1000   [ matrix-no-pragma.c(53,44) ]
+         remark #15328: vectorization support: non-unit strided load was emulated for the variable <B[k*1000+j]>, stride is 1000   [ matrix-noparallel.c(55,44) ]
          remark #15305: vectorization support: vector length 4
          remark #15399: vectorization support: unroll factor set to 4
          remark #15309: vectorization support: normalized vectorization overhead 0.207
@@ -362,42 +356,36 @@ LOOP BEGIN at matrix-no-pragma.c(46,5)
    LOOP END
 LOOP END
 
-LOOP BEGIN at matrix-no-pragma.c(46,5)
+LOOP BEGIN at matrix-noparallel.c(50,9)
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
    remark #25015: Estimate of max trip count of loop=1000
 
-   LOOP BEGIN at matrix-no-pragma.c(48,9)
+   LOOP BEGIN at matrix-noparallel.c(53,13)
       remark #17107: loop was not parallelized: inner loop
-      remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+      remark #15389: vectorization support: reference A[i*1000+k] has unaligned access   [ matrix-noparallel.c(55,29) ]
+      remark #15381: vectorization support: unaligned access used inside loop body
+      remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+      remark #15328: vectorization support: non-unit strided load was emulated for the variable <B[k*1000+j]>, stride is 1000   [ matrix-noparallel.c(55,44) ]
+      remark #15305: vectorization support: vector length 4
+      remark #15399: vectorization support: unroll factor set to 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.207
+      remark #15450: unmasked unaligned unit stride loads: 1 
+      remark #15452: unmasked strided loads: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 8 
+      remark #15477: vector cost: 10.250 
+      remark #15478: estimated potential speedup: 0.770 
+      remark #15488: --- end vector cost summary ---
+      remark #25438: unrolled without remainder by 2  
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+      remark #25457: Number of partial sums replaced: 1
       remark #25015: Estimate of max trip count of loop=1000
-
-      LOOP BEGIN at matrix-no-pragma.c(51,13)
-         remark #17107: loop was not parallelized: inner loop
-         remark #15389: vectorization support: reference A[i*1000+k] has unaligned access   [ matrix-no-pragma.c(53,29) ]
-         remark #15381: vectorization support: unaligned access used inside loop body
-         remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
-         remark #15328: vectorization support: non-unit strided load was emulated for the variable <B[k*1000+j]>, stride is 1000   [ matrix-no-pragma.c(53,44) ]
-         remark #15305: vectorization support: vector length 4
-         remark #15399: vectorization support: unroll factor set to 4
-         remark #15309: vectorization support: normalized vectorization overhead 0.207
-         remark #15450: unmasked unaligned unit stride loads: 1 
-         remark #15452: unmasked strided loads: 1 
-         remark #15475: --- begin vector cost summary ---
-         remark #15476: scalar cost: 8 
-         remark #15477: vector cost: 10.250 
-         remark #15478: estimated potential speedup: 0.770 
-         remark #15488: --- end vector cost summary ---
-         remark #25438: unrolled without remainder by 2  
-         remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
-         remark #25457: Number of partial sums replaced: 1
-         remark #25015: Estimate of max trip count of loop=1000
-      LOOP END
    LOOP END
 LOOP END
 
     Report from: Code generation optimizations [cg]
 
-matrix-no-pragma.c(43,78):remark #34051: REGISTER ALLOCATION : [multiply_matrices] matrix-no-pragma.c:43
+matrix-noparallel.c(43,78):remark #34051: REGISTER ALLOCATION : [multiply_matrices] matrix-noparallel.c:43
 
     Hardware registers
         Reserved     :    2[ rsp rip]
@@ -406,19 +394,19 @@ matrix-no-pragma.c(43,78):remark #34051: REGISTER ALLOCATION : [multiply_matrice
         Assigned     :   19[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0-zmm3]
         
     Routine temporaries
-        Total         :     130
-            Global    :      47
-            Local     :      83
-        Regenerable   :      39
+        Total         :     123
+            Global    :      41
+            Local     :      82
+        Regenerable   :      37
         Spilled       :       3
         
     Routine stack
-        Variables     :      56 bytes*
-            Reads     :       2 [8.20e+00 ~ 0.4%]
-            Writes    :      11 [0.00e+00 ~ 0.0%]
+        Variables     :      60 bytes*
+            Reads     :       2 [4.50e+01 ~ 1.8%]
+            Writes    :      12 [0.00e+00 ~ 0.0%]
         Spills        :      72 bytes*
-            Reads     :      15 [1.42e+01 ~ 0.7%]
-            Writes    :      15 [4.00e+00 ~ 0.2%]
+            Reads     :      16 [6.00e+00 ~ 0.2%]
+            Writes    :      17 [2.00e+00 ~ 0.1%]
     
     Notes
     

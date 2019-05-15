@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define X 10000
-#define Y 100000
-#define Z 10000
+#define X 1000
+#define Y 1000
+#define Z 1000
 
 float *A, *B, *C;
 
@@ -75,6 +75,13 @@ void main()
     printf("starting multiplication\n"); c1 = clock();
 
     multiply_matrices(A, B, C, X, Y, Z);
+    if (C[0] < 0)
+    {
+        printf("negative\n");
+    }
+    else {
+        printf("positive\n");
+    }
     // printf("\n");
     // print_matrice(C, X, Z);
 

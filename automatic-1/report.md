@@ -1,37 +1,150 @@
+
+
+
+Notes
+=====
+
+Почему с флагом -guided-par не меняется *.o?
+При этом guided-par меняет содержание отчета: без него у matrice_multiply нет ничего связанного с параллелизацией циклов
+
+Pragma/No-Pragma
+================
+
+↑130 optimization/automatic-1 git:(master) ▶ icc -parallel matrix-no-pragma.c -o matrix-no-pragma.o -qopt-report=5 -O2
+icc: remark #10397: optimization reports are generated in *.optrpt files in the output location
+matrix-no-pragma.c(13): warning #266: function "time" declared implicitly
+      srand((unsigned)time(&t));
+                      ^
+
+matrix-no-pragma.c(68): warning #266: function "clock" declared implicitly
+      c0 = clock();
+           ^
+
+Ξ optimization/automatic-1 git:(master) ▶ ./matrix-no-pragma.o
+A.
+        B.
+                C.
+starting multiplication
+negative
+finished.
+multiplication took 3875000 ticks
+everything took 3921875 ticks
 Ξ optimization/automatic-1 git:(master) ▶ icc -parallel matrix.c -o matrix.o -qopt-report=5 -O2
 icc: remark #10397: optimization reports are generated in *.optrpt files in the output location
 matrix.c(13): warning #266: function "time" declared implicitly
       srand((unsigned)time(&t));
                       ^
 
-matrix.c(71): warning #266: function "clock" declared implicitly
+matrix.c(70): warning #266: function "clock" declared implicitly
       c0 = clock();
            ^
-Ξ optimization/automatic-1 git:(master) ▶ time ./matrix.o
+
+Ξ optimization/automatic-1 git:(master) ▶ ./matrix.o
 A.
         B.
                 C.
 starting multiplication
+negative
 finished.
-multiplication took 0 ticks
-everything took 31437500 ticks
-./matrix.o  23.12s user 8.33s system 99% cpu 31.522 total
-Ξ optimization/automatic-1 git:(master) ▶ icc matrix.c -o matrix.o -qopt-report=5
+multiplication took 4218750 ticks
+everything took 4250000 ticks
+Ξ optimization/automatic-1 git:(master) ▶ icc matrix.c -o matrix.o -qopt-report=5 -O2
 icc: remark #10397: optimization reports are generated in *.optrpt files in the output location
 matrix.c(13): warning #266: function "time" declared implicitly
       srand((unsigned)time(&t));
                       ^
 
-matrix.c(71): warning #266: function "clock" declared implicitly
+matrix.c(70): warning #266: function "clock" declared implicitly
       c0 = clock();
            ^
 
-Ξ optimization/automatic-1 git:(master) ▶ time ./matrix.o
+Ξ optimization/automatic-1 git:(master) ▶ ./matrix.o
 A.
         B.
                 C.
 starting multiplication
+positive
 finished.
-multiplication took 0 ticks
-everything took 33000000 ticks
-./matrix.o  23.36s user 9.66s system 98% cpu 33.360 total
+multiplication took 1140625 ticks
+everything took 1156250 ticks
+Ξ optimization/automatic-1 git:(master) ▶ ./matrix-noparallel.o
+A.
+        B.
+                C.
+starting multiplication
+positive
+finished.
+multiplication took 7765625 ticks
+everything took 7812500 ticks
+
+
+matrices 2000 * 10000 * 5000
+============================
+
+Ξ optimization/automatic-1 git:(master) ▶ ./matrix.o
+A.
+        B.
+                C.
+starting multiplication
+positive
+finished.
+multiplication took 1359906250 ticks
+everything took 1361046875 ticks
+Ξ optimization/automatic-1 git:(master) ▶ icc -no-vec matrix.c -o matrix.o -O2 -qopt-report=5 && ./matrix.o
+icc: remark #10397: optimization reports are generated in *.optrpt files in the output location
+matrix.c(13): warning #266: function "time" declared implicitly
+      srand((unsigned)time(&t));
+                      ^
+
+matrix.c(70): warning #266: function "clock" declared implicitly
+      c0 = clock();
+           ^
+
+A.
+        B.
+                C.
+starting multiplication
+positive
+finished.
+multiplication took 721062500 ticks
+everything took 722171875 ticks
+
+
+matrices 2000 * 2000 * 2000
+=============================
+Ξ optimization/automatic-1 git:(master) ▶ icc -parallel -no-vec matrix.c -o matrix.o -O2 -qopt-report=5 && ./matrix.o
+icc: remark #10397: optimization reports are generated in *.optrpt files in the output location
+matrix.c(13): warning #266: function "time" declared implicitly
+      srand((unsigned)time(&t));
+                      ^
+
+matrix.c(70): warning #266: function "clock" declared implicitly
+      c0 = clock();
+           ^
+
+A.
+        B.
+                C.
+starting multiplication
+positive
+finished.
+multiplication took 73906250 ticks
+everything took 74031250 ticks
+Ξ optimization/automatic-1 git:(master) ▶ icc -no-vec matrix.c -o matrix.o -O2 -qopt-report=5 && ./matrix.o
+icc: remark #10397: optimization reports are generated in *.optrpt files in the output location
+matrix.c(13): warning #266: function "time" declared implicitly
+      srand((unsigned)time(&t));
+                      ^
+
+matrix.c(70): warning #266: function "clock" declared implicitly
+      c0 = clock();
+           ^
+
+A.
+        B.
+                C.
+starting multiplication
+negative
+finished.
+multiplication took 38140625 ticks
+everything took 38312500 ticks
