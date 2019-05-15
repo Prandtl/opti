@@ -197,3 +197,52 @@ positive
 multiplication took 74468750 ticks
 everything took 74593750 ticks
 ./matrix.o  74.59s user 0.14s system 734% cpu 10.171 total
+
+
+
+
+THE MOMENT I REALISED THAT CLOCK AND TIME WERE LYING TO ME
+===============================================================
+Ξ optimization/automatic-1 git:(master) ▶ icc matrix.c -o matrix.o -O2 -qopt-report=5 && time ./matrix.o
+icc: remark #10397: optimization reports are generated in *.optrpt files in the output location
+matrix.c(14): warning #266: function "time" declared implicitly
+      srand((unsigned)time(&t));
+                      ^
+
+matrix.c(61): warning #266: function "memcpy" declared implicitly
+          memcpy(&C[z * i], buffer, z * sizeof(float));
+          ^
+
+A.
+        B.
+                C.
+starting multiplication
+finished.
+negative
+multiplication took 37.974070 s.
+./matrix.o  38.05s user 0.06s system 99% cpu 38.138 total
+Ξ optimization/automatic-1 git:(master) ▶ icc -parallel matrix.c -o matrix.o -O2 -qopt-report=5 && time ./matrix.o
+icc: remark #10397: optimization reports are generated in *.optrpt files in the output location
+matrix.c(14): warning #266: function "time" declared implicitly
+      srand((unsigned)time(&t));
+                      ^
+
+matrix.c(61): warning #266: function "memcpy" declared implicitly
+          memcpy(&C[z * i], buffer, z * sizeof(float));
+          ^
+
+A.
+        B.
+                C.
+starting multiplication
+finished.
+positive
+multiplication took 10.104666 s.
+./matrix.o  75.12s user 0.17s system 733% cpu 10.264 total
+
+
+RESUME
+========
+
+В общем - parallel - работает.
+наличие буфера - ничего не меняет, как вообщем-то и #pragma parallel: loop автопараллелизуется и без вмешательства человека

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 #define X 2000
 #define Y 2000
@@ -43,11 +44,9 @@ void print_matrice(float M[], int r, int c) {
 void multiply_matrices(float A[], float B[], float C[], int x, int y, int z) {
     int i, j, k;
     float sum;
-    #pragma parallel
     for (i = 0; i < x; i++)
     {
-        float* buffer = (float*) malloc(z * sizeof(float));
-        #pragma parallel
+        // float* buffer = (float*) malloc(z * sizeof(float));
         for (j = 0; j < z; j++)
         {
             sum = 0;
@@ -55,10 +54,10 @@ void multiply_matrices(float A[], float B[], float C[], int x, int y, int z) {
             {
                 sum = sum + A[i * y + k] * B[k * z + j];
             }
-            buffer[j] = sum;
+            C[z * i + j] = sum;
         }
-        memcpy(&C[z * i], buffer, z * sizeof(float));
-        free(buffer);
+        // memcpy(&C[z * i], buffer, z * sizeof(float));
+        // free(buffer);
 
     }
 }
@@ -69,14 +68,16 @@ void main()
     B = (float*) malloc(Y * Z * sizeof(float));printf("\tB.\n");
     C = (float*) malloc(X * Z * sizeof(float));printf("\t\tC.\n");
 
-    clock_t c0, c1, c2;
+    struct timeval start, stop;
+
     double seconds;
-    c0 = clock();
     generate_matrices();
 
-    printf("starting multiplication\n"); c1 = clock();
+    printf("starting multiplication\n");
+    gettimeofday(&start, NULL);
     multiply_matrices(A, B, C, X, Y, Z);
-    c2 = clock(); printf("finished.\n");
+    gettimeofday(&stop, NULL);
+    printf("finished.\n");
 
     if (C[0] < 0)
     {
@@ -85,11 +86,8 @@ void main()
     else {
         printf("positive\n");
     }
-
-    int cpu_time_used = (c2 - c1);
-    int cpu_time_used_all = (c2 - c0);
-    printf("multiplication took %i ticks\n", cpu_time_used);
-    printf("everything took %i ticks\n", cpu_time_used_all);
+    double duration = (double)(stop.tv_sec - start.tv_sec + (stop.tv_usec - start.tv_usec) / 1000000.0);
+    printf("multiplication took %lf s.\n", duration);
 
     free(A);
     free(B);
