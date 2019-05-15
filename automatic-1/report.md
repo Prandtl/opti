@@ -148,3 +148,52 @@ negative
 finished.
 multiplication took 38140625 ticks
 everything took 38312500 ticks
+
+Buffer
+===========
+Ξ optimization/automatic-1 git:(master) ▶ icc -no-vec matrix.c -o matrix.o -O2 -qopt-report=5 && time ./matrix.o
+icc: remark #10397: optimization reports are generated in *.optrpt files in the output location
+matrix.c(13): warning #266: function "time" declared implicitly
+      srand((unsigned)time(&t));
+                      ^
+
+matrix.c(60): warning #266: function "memcpy" declared implicitly
+          memcpy(&C[z * i], buffer, z * sizeof(float));
+          ^
+
+matrix.c(74): warning #266: function "clock" declared implicitly
+      c0 = clock();
+           ^
+
+A.
+        B.
+                C.
+starting multiplication
+finished.
+positive
+multiplication took 39296875 ticks
+everything took 39406250 ticks
+./matrix.o  39.27s user 0.16s system 99% cpu 39.500 total
+Ξ optimization/automatic-1 git:(master) ▶ icc -parallel -no-vec matrix.c -o matrix.o -O2 -qopt-report=5 && time ./matrix.o
+icc: remark #10397: optimization reports are generated in *.optrpt files in the output location
+matrix.c(13): warning #266: function "time" declared implicitly
+      srand((unsigned)time(&t));
+                      ^
+
+matrix.c(60): warning #266: function "memcpy" declared implicitly
+          memcpy(&C[z * i], buffer, z * sizeof(float));
+          ^
+
+matrix.c(74): warning #266: function "clock" declared implicitly
+      c0 = clock();
+           ^
+
+A.
+        B.
+                C.
+starting multiplication
+finished.
+positive
+multiplication took 74468750 ticks
+everything took 74593750 ticks
+./matrix.o  74.59s user 0.14s system 734% cpu 10.171 total
