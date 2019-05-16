@@ -1,10 +1,13 @@
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
 
 void main()
 {
-    int number, i, j;
+    // printf("Square root of %lf is %lf\n", 5.0, floor(sqrt(5.0)) );
+
+    int number, i, j, maxiter, current;
     struct timeval start, stop;
 
     printf("Enter the number\n");
@@ -13,6 +16,7 @@ void main()
     printf("initialization...\n");
     int* primes = (int*) malloc((number + 1) * sizeof(int));;
 
+    #pragma loop count min(1024)
     for (i = 2; i <= number; i++)
     {
         primes[i] = i;
@@ -22,20 +26,15 @@ void main()
 
     printf("sieving...\n");
     gettimeofday(&start, NULL);
-    for (i = 2; (i * i) <= number; i++)
+    maxiter = floor(sqrt(number));
+    for (i = 2; i <= maxiter; i++)
     {
         if (primes[i] != 0)
         {
-            for (j = 2; j < number; j++)
+            current = primes[i];
+            for (j = current * 2; j <= number; j = j + current)
             {
-                if (primes[i] * j > number)
-                {
-                    break;
-                }
-                else
-                {
-                    primes[primes[i] * j] = 0;
-                }
+                primes[j] = 0;
             }
         }
     }
@@ -43,15 +42,16 @@ void main()
     printf("done.\n");
     double duration = (double)(stop.tv_sec - start.tv_sec + (stop.tv_usec - start.tv_usec) / 1000000.0);
     printf("sieving took %lf s.\n", duration);
-    printf("amount of primes: ");
     int counter = 0;
+    #pragma loop count min(512)
     for (i = 2; i <= number; i++)
     {
         if (primes[i] != 0)
         {
             counter++;
+            // printf("%d\n", primes[i]);
         }
     }
-    printf("%d\n", counter);
+    printf("amount of primes: "); printf("%d\n", counter);
     free(primes);
 }
