@@ -14,7 +14,7 @@ void main()
     scanf("%d", &number);
 
     printf("initialization...\n");
-    int* primes = (int*) malloc((number + 1) * sizeof(int));;
+    int* primes = (int*) malloc((number + 1) * sizeof(int));
 
     #pragma loop count min(1024)
     for (i = 2; i <= number; i++)
