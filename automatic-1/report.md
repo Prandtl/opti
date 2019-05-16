@@ -9,7 +9,7 @@ Notes
 
 Pragma/No-Pragma
 ================
-
+```
 ↑130 optimization/automatic-1 git:(master) ▶ icc -parallel matrix-no-pragma.c -o matrix-no-pragma.o -qopt-report=5 -O2
 icc: remark #10397: optimization reports are generated in *.optrpt files in the output location
 matrix-no-pragma.c(13): warning #266: function "time" declared implicitly
@@ -76,11 +76,11 @@ positive
 finished.
 multiplication took 7765625 ticks
 everything took 7812500 ticks
-
+```
 
 matrices 2000 * 10000 * 5000
 ============================
-
+```
 Ξ optimization/automatic-1 git:(master) ▶ ./matrix.o
 A.
         B.
@@ -108,10 +108,11 @@ positive
 finished.
 multiplication took 721062500 ticks
 everything took 722171875 ticks
-
+```
 
 matrices 2000 * 2000 * 2000
 =============================
+```
 Ξ optimization/automatic-1 git:(master) ▶ icc -parallel -no-vec matrix.c -o matrix.o -O2 -qopt-report=5 && ./matrix.o
 icc: remark #10397: optimization reports are generated in *.optrpt files in the output location
 matrix.c(13): warning #266: function "time" declared implicitly
@@ -148,9 +149,10 @@ negative
 finished.
 multiplication took 38140625 ticks
 everything took 38312500 ticks
-
+```
 Buffer
 ===========
+```
 Ξ optimization/automatic-1 git:(master) ▶ icc -no-vec matrix.c -o matrix.o -O2 -qopt-report=5 && time ./matrix.o
 icc: remark #10397: optimization reports are generated in *.optrpt files in the output location
 matrix.c(13): warning #266: function "time" declared implicitly
@@ -199,10 +201,11 @@ everything took 74593750 ticks
 ./matrix.o  74.59s user 0.14s system 734% cpu 10.171 total
 
 
-
+```
 
 THE MOMENT I REALISED THAT CLOCK AND TIME WERE LYING TO ME
 ===============================================================
+```
 Ξ optimization/automatic-1 git:(master) ▶ icc matrix.c -o matrix.o -O2 -qopt-report=5 && time ./matrix.o
 icc: remark #10397: optimization reports are generated in *.optrpt files in the output location
 matrix.c(14): warning #266: function "time" declared implicitly
@@ -240,9 +243,10 @@ positive
 multiplication took 10.104666 s.
 ./matrix.o  75.12s user 0.17s system 733% cpu 10.264 total
 
-
+```
 RESUME
 ========
 
 В общем - parallel - работает.
+
 наличие буфера - ничего не меняет, как вообщем-то и #pragma parallel: loop автопараллелизуется и без вмешательства человека
