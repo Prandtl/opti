@@ -27,6 +27,8 @@ void main()
     printf("sieving...\n");
     gettimeofday(&start, NULL);
     maxiter = floor(sqrt(number));
+    #pragma parallel
+    #pragma loop count min(512)
     for (i = 2; i <= maxiter; i++)
     {
         if (primes[i] != 0)
