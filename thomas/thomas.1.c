@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <sys/time.h>
 #include <omp.h>
 
 #define X 10000
-#define THREAD_NUM 8
+#define THREAD_NUM 4
 
 float *A, *f;
 
@@ -127,26 +127,38 @@ void main()
     f = (float *)malloc(X * sizeof(float));
     printf("f.\n");
 
-    clock_t c0, c1, c2;
+    struct timeval start, middle, stop;
     double seconds;
-    c0 = clock();
+    gettimeofday(&start, NULL);
     generate_problem();
 
     // print_matrice(A, X, X);
     // print_matrice(f, X, 1);
 
     printf("starting calculation\n");
-    c1 = clock();
+    gettimeofday(&middle, NULL);
     solve();
-    c2 = clock();
+    gettimeofday(&stop, NULL);
     printf("finished.\n");
 
     // print_matrice(A, X, X);
-    print_matrice(f, 1, X);
-    int cpu_time_used = (c2 - c1);
-    int cpu_time_used_all = (c2 - c0);
-    printf("calculation took %i ticks\n", cpu_time_used);
-    printf("everything took %i ticks\n", cpu_time_used_all);
+    // print_matrice(f, 1, X);
+
+    for (int i = 0; i < 10; i++)
+    {
+        printf("%f, ", f[i]);
+    }
+    printf("\n...\n");
+    for (int i = X - 11; i < X; i++)
+    {
+        printf("%f, ", f[i]);
+    }
+    printf("\n");
+
+    double all_time = (double)(stop.tv_sec - start.tv_sec + (stop.tv_usec - start.tv_usec) / 1000000.0);
+    double calculation_time = (double)(stop.tv_sec - middle.tv_sec + (middle.tv_usec - middle.tv_usec) / 1000000.0);
+    printf("calculation took %lf s\n", calculation_time);
+    printf("everything took %lf s\n", all_time);
 
     free(A);
     free(f);
