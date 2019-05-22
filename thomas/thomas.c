@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define X 12
+#define X 10000
 
 float *A, *f;
 

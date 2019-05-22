@@ -3,28 +3,28 @@
 #include <time.h>
 #include <omp.h>
 
-#define X 12
-#define THREAD_NUM 3
+#define X 10000
+#define THREAD_NUM 8
 
 float *A, *f;
 
 void generate_problem()
 {
     int counter = 1;
-    A[0] = counter++ ;
-    A[1] = counter++;
+    A[0] = counter++ % 25 + 1;
+    A[1] = counter++ % 25 + 1;
     f[0] = 0;
     for (int i = 1; i < X - 1; i++)
     {
-        A[i * X + i - 1] = counter++;
-        A[i * X + i] = counter++;
-        A[i * X + i + 1] = counter++;
+        A[i * X + i - 1] = counter++ % 25 + 1;
+        A[i * X + i] = counter++ % 25 + 1;
+        A[i * X + i + 1] = counter++ % 25 + 1;
 
         f[i] = i * i;
     }
-    A[(X - 1) * X + X - 2] = counter++;
-    A[(X - 1) * X + X - 1] = counter++;
-    f[X - 1] = (X - 1) * (X - 1);
+    A[(X - 1) * X + X - 2] = counter++ % 25 + 1;
+    A[(X - 1) * X + X - 1] = counter++ % 25 + 1;
+    f[X - 1] = (X - 1) * (X - 1) % 25 + 1;
 }
 
 void print_matrice(float M[], int r, int c)
@@ -75,50 +75,47 @@ void solve()
             A[(i - 1) * X + end - 1] = A[(i - 1) * X + end - 1] - A[i * X + end - 1] * multiplicator;
             f[i - 1] = f[i - 1] - f[i] * multiplicator;
         }
-    }
 
-    for (int i = chunkSize * 2 - 1; i < X; i = i + chunkSize)
-    {
-        float multiplicator = A[i * X + i - chunkSize] / A[(i - chunkSize) * X + i - chunkSize];
-        A[i * X + i - chunkSize] = 0;
-        A[i * X + i] = A[i * X + i] - A[(i - chunkSize) * X + i] * multiplicator;
-        f[i] = f[i] - f[i - 1] * multiplicator;
-    }
+#pragma omp single
+        {
 
-    f[X - 1] = f[X - 1] / A[(X - 1) * X + X - 1];
-    A[(X - 1) * X + X - 1] = 1;
+            for (int i = chunkSize * 2 - 1; i < X; i = i + chunkSize)
+            {
+                float multiplicator = A[i * X + i - chunkSize] / A[(i - chunkSize) * X + i - chunkSize];
+                A[i * X + i - chunkSize] = 0;
+                A[i * X + i] = A[i * X + i] - A[(i - chunkSize) * X + i] * multiplicator;
+                f[i] = f[i] - f[i - 1] * multiplicator;
+            }
 
-    for (int i = X - chunkSize - 1; i > 0; i = i - chunkSize)
-    {
-        f[i] = (f[i] - A[i * X + i + chunkSize] * f[i + chunkSize]) / A[i * X + i];
-        A[i * X + i] = 1;
-        A[i * X + i + chunkSize] = 0;
-    }
-    print_matrice(A, X, X);
-    printf("\n");
-    print_matrice(f, 1, X);
-#pragma omp parallel num_threads(THREAD_NUM)
-    {
-        int thread_num = omp_get_thread_num();
-        int start = chunkSize * thread_num;
-        int end = chunkSize * (thread_num + 1);
+            f[X - 1] = f[X - 1] / A[(X - 1) * X + X - 1];
+            A[(X - 1) * X + X - 1] = 1;
 
+            for (int i = X - chunkSize - 1; i > 0; i = i - chunkSize)
+            {
+                f[i] = (f[i] - A[i * X + i + chunkSize] * f[i + chunkSize]) / A[i * X + i];
+                A[i * X + i] = 1;
+                A[i * X + i + chunkSize] = 0;
+            }
+        }
+
+        // print_matrice(A, X, X);
+        // printf("\n");
+        // print_matrice(f, 1, X);
         for (int i = start; i < end - 1; i++)
         {
-            printf("thread %d, i = %d: %f\n", thread_num, i, A[i * X + i]);
-            // if (thread_num == 0)
-            // {
-            //     f[i] = (f[i] - A[i * X + chunkSize - 1] * f[start + chunkSize - 1]) / A[i * X + i];
-            //     A[i * X + chunkSize - 1] = 0;
-            //     A[i * X + i] = 1;
-            // }
-            // else
-            // {
-            //     f[i] = (f[i] - A[i * X + chunkSize - 1] * f[start + chunkSize - 1] - A[i * X + start - 1] * f[start - 1]) / A[i * X + i];
-            //     A[i * X + start + chunkSize - 1] = 0;
-            //     A[i * X + start - 1] = 0;
-            //     A[i * X + i] = 1;
-            // }
+            if (thread_num == 0)
+            {
+                f[i] = (f[i] - A[i * X + chunkSize - 1] * f[start + chunkSize - 1]) / A[i * X + i];
+                A[i * X + chunkSize - 1] = 0;
+                A[i * X + i] = 1;
+            }
+            else
+            {
+                f[i] = (f[i] - A[i * X + chunkSize - 1] * f[start + chunkSize - 1] - A[i * X + start - 1] * f[start - 1]) / A[i * X + i];
+                A[i * X + start + chunkSize - 1] = 0;
+                A[i * X + start - 1] = 0;
+                A[i * X + i] = 1;
+            }
         }
     }
 }
@@ -144,7 +141,7 @@ void main()
     c2 = clock();
     printf("finished.\n");
 
-    print_matrice(A, X, X);
+    // print_matrice(A, X, X);
     print_matrice(f, 1, X);
     int cpu_time_used = (c2 - c1);
     int cpu_time_used_all = (c2 - c0);
