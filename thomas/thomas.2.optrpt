@@ -4,7 +4,7 @@ See "https://software.intel.com/en-us/intel-advisor-xe" for details.
 
 Intel(R) C Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 19.0.3.199 Build 20190206
 
-Compiler options: -o thomas.2.o -parallel -qopt-report=5
+Compiler options: -o thomas.2.o -qopt-report=5
 
     Report from: Interprocedural optimizations [ipo]
 
@@ -32,95 +32,166 @@ Begin optimization report for: main()
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (main()) [1/5=20.0%] thomas.2.c(97,1)
-  -> EXTERN: (98,18) malloc(size_t)
-  -> EXTERN: (99,18) malloc(size_t)
-  -> EXTERN: (100,18) malloc(size_t)
-  -> EXTERN: (101,18) malloc(size_t)
-  -> EXTERN: (105,5) gettimeofday(struct timeval *__restrict__, __timezone_ptr_t)
-  -> INLINE: (106,5) generate_problem() (isz = 85) (sz = 88)
-  -> EXTERN: (111,5) printf(const char *__restrict__, ...)
-  -> EXTERN: (112,5) gettimeofday(struct timeval *__restrict__, __timezone_ptr_t)
-  -> INLINE: (113,5) solve() (isz = 103) (sz = 106)
-  -> EXTERN: (114,5) gettimeofday(struct timeval *__restrict__, __timezone_ptr_t)
-  -> EXTERN: (115,5) printf(const char *__restrict__, ...)
-  -> EXTERN: (127,9) printf(const char *__restrict__, ...)
-  -> EXTERN: (129,5) printf(const char *__restrict__, ...)
-  -> EXTERN: (132,9) printf(const char *__restrict__, ...)
-  -> EXTERN: (134,5) printf(const char *__restrict__, ...)
-  -> EXTERN: (138,5) printf(const char *__restrict__, ...)
-  -> EXTERN: (139,5) printf(const char *__restrict__, ...)
-  -> EXTERN: (141,5) free(void *)
-  -> EXTERN: (142,5) free(void *)
-  -> EXTERN: (143,5) free(void *)
-  -> EXTERN: (144,5) free(void *)
+INLINE REPORT: (main()) [1/6=16.7%] thomas.2.c(132,1)
+  -> EXTERN: (133,19) malloc(size_t)
+  -> EXTERN: (134,19) malloc(size_t)
+  -> EXTERN: (135,19) malloc(size_t)
+  -> EXTERN: (136,19) malloc(size_t)
+  -> EXTERN: (138,20) malloc(size_t)
+  -> EXTERN: (139,20) malloc(size_t)
+  -> EXTERN: (140,20) malloc(size_t)
+  -> EXTERN: (141,20) malloc(size_t)
+  -> EXTERN: (145,5) gettimeofday(struct timeval *__restrict__, __timezone_ptr_t)
+  -> INLINE: (146,5) generate_problem() (isz = 85) (sz = 88)
+  -> EXTERN: (148,5) memcpy(void *, const void *, unsigned long long)
+  -> EXTERN: (149,5) memcpy(void *, const void *, unsigned long long)
+  -> EXTERN: (150,5) memcpy(void *, const void *, unsigned long long)
+  -> EXTERN: (151,5) memcpy(void *, const void *, unsigned long long)
+  -> EXTERN: (155,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (156,5) gettimeofday(struct timeval *__restrict__, __timezone_ptr_t)
+  -> INLINE: (157,5) solve() (isz = 103) (sz = 106)
+  -> EXTERN: (158,5) gettimeofday(struct timeval *__restrict__, __timezone_ptr_t)
+  -> EXTERN: (159,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (189,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (193,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (194,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (196,5) free(void *)
+  -> EXTERN: (197,5) free(void *)
+  -> EXTERN: (198,5) free(void *)
+  -> EXTERN: (199,5) free(void *)
 
 
     Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
 
 
-LOOP BEGIN at thomas.2.c(16,5) inlined into thomas.2.c(106,5)
-<Peeled loop for vectorization>
-   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+LOOP BEGIN at thomas.2.c(17,5) inlined into thomas.2.c(146,5)
+<Peeled loop for vectorization, Distributed chunk1>
    remark #25015: Estimate of max trip count of loop=3
 LOOP END
 
-LOOP BEGIN at thomas.2.c(16,5) inlined into thomas.2.c(106,5)
-   remark #17109: LOOP WAS AUTO-PARALLELIZED
-   remark #17101: parallel loop shared={ } private={ } firstprivate={ a b c f i } lastprivate={ } firstlastprivate={ counter } reduction={ }
-   remark #25427: Loop Statements Reordered
-   remark #15389: vectorization support: reference b[i] has unaligned access   [ thomas.2.c(19,9) ]
-   remark #15388: vectorization support: reference a[i] has aligned access   [ thomas.2.c(18,9) ]
-   remark #15389: vectorization support: reference f[i] has unaligned access   [ thomas.2.c(21,9) ]
-   remark #15389: vectorization support: reference c[i] has unaligned access   [ thomas.2.c(20,9) ]
-   remark #15388: vectorization support: reference a[i] has aligned access   [ thomas.2.c(20,16) ]
-   remark #15389: vectorization support: reference b[i] has unaligned access   [ thomas.2.c(20,23) ]
-   remark #15381: vectorization support: unaligned access used inside loop body
-   remark #15412: vectorization support: streaming store was generated for a[i]   [ thomas.2.c(18,9) ]
+LOOP BEGIN at thomas.2.c(17,5) inlined into thomas.2.c(146,5)
+<Distributed chunk1>
+   remark #25426: Loop Distributed (3 way) 
+   remark #15388: vectorization support: reference f[i] has aligned access   [ thomas.2.c(22,9) ]
+   remark #15412: vectorization support: streaming store was generated for f[i]   [ thomas.2.c(22,9) ]
+   remark #15412: vectorization support: streaming store was generated for f[i]   [ thomas.2.c(22,9) ]
    remark #15305: vectorization support: vector length 4
-   remark #15309: vectorization support: normalized vectorization overhead 0.099
-   remark #15300: LOOP WAS VECTORIZED
+   remark #15309: vectorization support: normalized vectorization overhead 0.116
+   remark #15301: PARTIAL LOOP WAS VECTORIZED
    remark #15442: entire loop may be executed in remainder
-   remark #15448: unmasked aligned unit stride loads: 1 
    remark #15449: unmasked aligned unit stride stores: 1 
-   remark #15450: unmasked unaligned unit stride loads: 1 
-   remark #15451: unmasked unaligned unit stride stores: 3 
-   remark #15467: unmasked aligned streaming stores: 1 
+   remark #15467: unmasked aligned streaming stores: 2 
    remark #15475: --- begin vector cost summary ---
-   remark #15476: scalar cost: 74 
-   remark #15477: vector cost: 63.250 
-   remark #15478: estimated potential speedup: 1.160 
-   remark #15482: vectorized math library calls: 3 
-   remark #15487: type converts: 3 
+   remark #15476: scalar cost: 22 
+   remark #15477: vector cost: 21.500 
+   remark #15478: estimated potential speedup: 1.020 
+   remark #15482: vectorized math library calls: 1 
+   remark #15487: type converts: 1 
    remark #15488: --- end vector cost summary ---
    remark #25015: Estimate of max trip count of loop=249999
 LOOP END
 
-LOOP BEGIN at thomas.2.c(16,5) inlined into thomas.2.c(106,5)
-<Remainder loop for vectorization>
-   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
-   remark #25015: Estimate of max trip count of loop=999998
+LOOP BEGIN at thomas.2.c(17,5) inlined into thomas.2.c(146,5)
+<Remainder loop for vectorization, Distributed chunk1>
 LOOP END
 
-LOOP BEGIN at thomas.2.c(78,5) inlined into thomas.2.c(113,5)
-<Distributed chunk1>
-   remark #17104: loop was not parallelized: existence of parallel dependence
-   remark #17106: parallel dependence: assumed FLOW dependence between c[i] (82:9) and c[i-1] (80:38)
-   remark #25426: Loop Distributed (2 way) 
-   remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed FLOW dependence between c[i] (82:9) and c[i-1] (80:38)
-LOOP END
-
-LOOP BEGIN at thomas.2.c(78,5) inlined into thomas.2.c(113,5)
+LOOP BEGIN at thomas.2.c(17,5) inlined into thomas.2.c(146,5)
 <Peeled loop for vectorization, Distributed chunk2>
+   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
    remark #25015: Estimate of max trip count of loop=3
 LOOP END
 
-LOOP BEGIN at thomas.2.c(78,5) inlined into thomas.2.c(113,5)
+LOOP BEGIN at thomas.2.c(17,5) inlined into thomas.2.c(146,5)
 <Distributed chunk2>
-   remark #15388: vectorization support: reference a[i] has aligned access   [ thomas.2.c(81,9) ]
-   remark #15412: vectorization support: streaming store was generated for a[i]   [ thomas.2.c(81,9) ]
+   remark #15388: vectorization support: reference a[i] has aligned access   [ thomas.2.c(19,9) ]
+   remark #15388: vectorization support: reference b[i] has aligned access   [ thomas.2.c(20,9) ]
+   remark #15412: vectorization support: streaming store was generated for b[i]   [ thomas.2.c(20,9) ]
+   remark #15412: vectorization support: streaming store was generated for b[i]   [ thomas.2.c(20,9) ]
+   remark #15412: vectorization support: streaming store was generated for a[i]   [ thomas.2.c(19,9) ]
+   remark #15412: vectorization support: streaming store was generated for a[i]   [ thomas.2.c(19,9) ]
+   remark #15412: vectorization support: streaming store was generated for b[i]   [ thomas.2.c(20,9) ]
+   remark #15412: vectorization support: streaming store was generated for b[i]   [ thomas.2.c(20,9) ]
    remark #15305: vectorization support: vector length 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.103
+   remark #15301: PARTIAL LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15449: unmasked aligned unit stride stores: 2 
+   remark #15467: unmasked aligned streaming stores: 6 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 43 
+   remark #15477: vector cost: 41.250 
+   remark #15478: estimated potential speedup: 1.040 
+   remark #15482: vectorized math library calls: 2 
+   remark #15487: type converts: 2 
+   remark #15488: --- end vector cost summary ---
+   remark #25015: Estimate of max trip count of loop=249999
+LOOP END
+
+LOOP BEGIN at thomas.2.c(17,5) inlined into thomas.2.c(146,5)
+<Alternate Alignment Vectorized Loop, Distributed chunk2>
+   remark #25015: Estimate of max trip count of loop=249999
+LOOP END
+
+LOOP BEGIN at thomas.2.c(17,5) inlined into thomas.2.c(146,5)
+<Remainder loop for vectorization, Distributed chunk2>
+   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+LOOP END
+
+LOOP BEGIN at thomas.2.c(17,5) inlined into thomas.2.c(146,5)
+<Peeled loop for vectorization, Distributed chunk3>
+   remark #25015: Estimate of max trip count of loop=1
+LOOP END
+
+LOOP BEGIN at thomas.2.c(17,5) inlined into thomas.2.c(146,5)
+<Distributed chunk3>
+   remark #15388: vectorization support: reference c[i] has aligned access   [ thomas.2.c(21,9) ]
+   remark #15389: vectorization support: reference a[i] has unaligned access   [ thomas.2.c(21,16) ]
+   remark #15388: vectorization support: reference b[i] has aligned access   [ thomas.2.c(21,23) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15412: vectorization support: streaming store was generated for c[i]   [ thomas.2.c(21,9) ]
+   remark #15412: vectorization support: streaming store was generated for c[i]   [ thomas.2.c(21,9) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15309: vectorization support: normalized vectorization overhead 2.125
+   remark #15301: PARTIAL LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15467: unmasked aligned streaming stores: 2 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 10 
+   remark #15477: vector cost: 4.000 
+   remark #15478: estimated potential speedup: 2.490 
+   remark #15488: --- end vector cost summary ---
+   remark #25015: Estimate of max trip count of loop=499999
+LOOP END
+
+LOOP BEGIN at thomas.2.c(17,5) inlined into thomas.2.c(146,5)
+<Alternate Alignment Vectorized Loop, Distributed chunk3>
+   remark #25015: Estimate of max trip count of loop=499999
+LOOP END
+
+LOOP BEGIN at thomas.2.c(17,5) inlined into thomas.2.c(146,5)
+<Remainder loop for vectorization, Distributed chunk3>
+LOOP END
+
+LOOP BEGIN at thomas.2.c(113,5) inlined into thomas.2.c(157,5)
+<Distributed chunk1>
+   remark #25426: Loop Distributed (2 way) 
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed FLOW dependence between c[i] (117:9) and c[i-1] (115:39)
+LOOP END
+
+LOOP BEGIN at thomas.2.c(113,5) inlined into thomas.2.c(157,5)
+<Peeled loop for vectorization, Distributed chunk2>
+   remark #25015: Estimate of max trip count of loop=1
+LOOP END
+
+LOOP BEGIN at thomas.2.c(113,5) inlined into thomas.2.c(157,5)
+<Distributed chunk2>
+   remark #15388: vectorization support: reference a[i] has aligned access   [ thomas.2.c(116,9) ]
+   remark #15412: vectorization support: streaming store was generated for a[i]   [ thomas.2.c(116,9) ]
+   remark #15305: vectorization support: vector length 2
    remark #15309: vectorization support: normalized vectorization overhead 3.333
    remark #15301: PARTIAL LOOP WAS VECTORIZED
    remark #15442: entire loop may be executed in remainder
@@ -128,79 +199,101 @@ LOOP BEGIN at thomas.2.c(78,5) inlined into thomas.2.c(113,5)
    remark #15467: unmasked aligned streaming stores: 1 
    remark #15475: --- begin vector cost summary ---
    remark #15476: scalar cost: 4 
-   remark #15477: vector cost: 0.750 
-   remark #15478: estimated potential speedup: 5.330 
+   remark #15477: vector cost: 1.500 
+   remark #15478: estimated potential speedup: 2.660 
    remark #15488: --- end vector cost summary ---
-   remark #25015: Estimate of max trip count of loop=249999
+   remark #25015: Estimate of max trip count of loop=499999
 LOOP END
 
-LOOP BEGIN at thomas.2.c(78,5) inlined into thomas.2.c(113,5)
+LOOP BEGIN at thomas.2.c(113,5) inlined into thomas.2.c(157,5)
 <Remainder loop for vectorization, Distributed chunk2>
 LOOP END
 
-LOOP BEGIN at thomas.2.c(88,5) inlined into thomas.2.c(113,5)
-   remark #17104: loop was not parallelized: existence of parallel dependence
-   remark #17106: parallel dependence: assumed FLOW dependence between f[i] (90:9) and f[i+1] (90:9)
+LOOP BEGIN at thomas.2.c(123,5) inlined into thomas.2.c(157,5)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed FLOW dependence between f[i] (90:9) and f[i+1] (90:9)
+   remark #15346: vector dependence: assumed FLOW dependence between f[i] (125:9) and f[i+1] (125:9)
 LOOP END
 
-LOOP BEGIN at thomas.2.c(125,5)
-   remark #17104: loop was not parallelized: existence of parallel dependence
-   remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.2.c(127,9) ]
-   remark #15344: loop was not vectorized: vector dependence prevents vectorization
-LOOP END
-
-LOOP BEGIN at thomas.2.c(130,5)
-   remark #17104: loop was not parallelized: existence of parallel dependence
-   remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.2.c(132,9) ]
-   remark #15344: loop was not vectorized: vector dependence prevents vectorization
-LOOP END
-
-LOOP BEGIN at thomas.2.c(16,5) inlined into thomas.2.c(106,5)
+LOOP BEGIN at thomas.2.c(183,5)
 <Peeled loop for vectorization>
-   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
-   remark #25015: Estimate of max trip count of loop=3
+   remark #25015: Estimate of max trip count of loop=1
 LOOP END
 
-LOOP BEGIN at thomas.2.c(16,5) inlined into thomas.2.c(106,5)
-   remark #25427: Loop Statements Reordered
-   remark #15389: vectorization support: reference b[i] has unaligned access   [ thomas.2.c(19,9) ]
-   remark #15388: vectorization support: reference a[i] has aligned access   [ thomas.2.c(18,9) ]
-   remark #15389: vectorization support: reference f[i] has unaligned access   [ thomas.2.c(21,9) ]
-   remark #15389: vectorization support: reference c[i] has unaligned access   [ thomas.2.c(20,9) ]
-   remark #15388: vectorization support: reference a[i] has aligned access   [ thomas.2.c(20,16) ]
-   remark #15389: vectorization support: reference b[i] has unaligned access   [ thomas.2.c(20,23) ]
+LOOP BEGIN at thomas.2.c(183,5)
+   remark #15388: vectorization support: reference f[i-1] has aligned access   [ thomas.2.c(185,21) ]
+   remark #15389: vectorization support: reference ai[i] has unaligned access   [ thomas.2.c(185,32) ]
+   remark #15389: vectorization support: reference f[i] has unaligned access   [ thomas.2.c(185,40) ]
+   remark #15389: vectorization support: reference ci[i] has unaligned access   [ thomas.2.c(185,47) ]
+   remark #15388: vectorization support: reference f[i+1] has aligned access   [ thomas.2.c(185,55) ]
+   remark #15389: vectorization support: reference bi[i] has unaligned access   [ thomas.2.c(185,66) ]
+   remark #15388: vectorization support: reference fi[i] has aligned access   [ thomas.2.c(185,74) ]
    remark #15381: vectorization support: unaligned access used inside loop body
-   remark #15412: vectorization support: streaming store was generated for a[i]   [ thomas.2.c(18,9) ]
-   remark #15305: vectorization support: vector length 4
-   remark #15309: vectorization support: normalized vectorization overhead 0.099
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.284
    remark #15300: LOOP WAS VECTORIZED
    remark #15442: entire loop may be executed in remainder
-   remark #15448: unmasked aligned unit stride loads: 1 
-   remark #15449: unmasked aligned unit stride stores: 1 
-   remark #15450: unmasked unaligned unit stride loads: 1 
-   remark #15451: unmasked unaligned unit stride stores: 3 
-   remark #15467: unmasked aligned streaming stores: 1 
+   remark #15448: unmasked aligned unit stride loads: 3 
+   remark #15450: unmasked unaligned unit stride loads: 4 
    remark #15475: --- begin vector cost summary ---
-   remark #15476: scalar cost: 74 
-   remark #15477: vector cost: 63.250 
-   remark #15478: estimated potential speedup: 1.160 
-   remark #15482: vectorized math library calls: 3 
-   remark #15487: type converts: 3 
+   remark #15476: scalar cost: 28 
+   remark #15477: vector cost: 18.500 
+   remark #15478: estimated potential speedup: 1.510 
    remark #15488: --- end vector cost summary ---
-   remark #25015: Estimate of max trip count of loop=249999
+   remark #25015: Estimate of max trip count of loop=124999
 LOOP END
 
-LOOP BEGIN at thomas.2.c(16,5) inlined into thomas.2.c(106,5)
+LOOP BEGIN at thomas.2.c(183,5)
+<Alternate Alignment Vectorized Loop>
+   remark #25015: Estimate of max trip count of loop=124999
+LOOP END
+
+LOOP BEGIN at thomas.2.c(183,5)
 <Remainder loop for vectorization>
-   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
-   remark #25015: Estimate of max trip count of loop=999998
+   remark #15388: vectorization support: reference f[i-1] has aligned access   [ thomas.2.c(185,21) ]
+   remark #15389: vectorization support: reference ai[i] has unaligned access   [ thomas.2.c(185,32) ]
+   remark #15389: vectorization support: reference f[i] has unaligned access   [ thomas.2.c(185,40) ]
+   remark #15389: vectorization support: reference ci[i] has unaligned access   [ thomas.2.c(185,47) ]
+   remark #15388: vectorization support: reference f[i+1] has aligned access   [ thomas.2.c(185,55) ]
+   remark #15389: vectorization support: reference bi[i] has unaligned access   [ thomas.2.c(185,66) ]
+   remark #15389: vectorization support: reference fi[i] has unaligned access   [ thomas.2.c(185,74) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15335: remainder loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+   remark #15305: vectorization support: vector length 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.788
+   remark #15442: entire loop may be executed in remainder
+   remark #15448: unmasked aligned unit stride loads: 3 
+   remark #15450: unmasked unaligned unit stride loads: 4 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 28 
+   remark #15477: vector cost: 18.500 
+   remark #15478: estimated potential speedup: 1.510 
+   remark #15488: --- end vector cost summary ---
 LOOP END
 
     Report from: Code generation optimizations [cg]
 
-thomas.2.c(97,1):remark #34051: REGISTER ALLOCATION : [main] thomas.2.c:97
+thomas.2.c(185,21):remark #34055: adjacent dense (unit-strided stencil) loads are not optimized. Details: stride { 8 }, step { 8 }, types { F64-V128, F64-V128 }, number of elements { 2 }, select mask { 0x000000003 }.
+thomas.2.c(185,55):remark #34055: adjacent dense (unit-strided stencil) loads are not optimized. Details: stride { 8 }, step { 8 }, types { F64-V128, F64-V128 }, number of elements { 2 }, select mask { 0x000000003 }.
+thomas.2.c(185,55):remark #34055: adjacent dense (unit-strided stencil) loads are not optimized. Details: stride { 8 }, step { 8 }, types { F64-V128, F64-V128 }, number of elements { 2 }, select mask { 0x000000003 }.
+thomas.2.c(185,55):remark #34055: adjacent dense (unit-strided stencil) loads are not optimized. Details: stride { 8 }, step { 8 }, types { F64-V128, F64-V128 }, number of elements { 2 }, select mask { 0x000000003 }.
+thomas.2.c(185,21):remark #34055: adjacent dense (unit-strided stencil) loads are not optimized. Details: stride { 8 }, step { 8 }, types { F64-V128, F64-V128 }, number of elements { 2 }, select mask { 0x000000003 }.
+thomas.2.c(185,55):remark #34055: adjacent dense (unit-strided stencil) loads are not optimized. Details: stride { 8 }, step { 8 }, types { F64-V128, F64-V128 }, number of elements { 2 }, select mask { 0x000000003 }.
+thomas.2.c(185,55):remark #34055: adjacent dense (unit-strided stencil) loads are not optimized. Details: stride { 8 }, step { 8 }, types { F64-V128, F64-V128 }, number of elements { 2 }, select mask { 0x000000003 }.
+thomas.2.c(185,55):remark #34055: adjacent dense (unit-strided stencil) loads are not optimized. Details: stride { 8 }, step { 8 }, types { F64-V128, F64-V128 }, number of elements { 2 }, select mask { 0x000000003 }.
+thomas.2.c(148,5):remark #34014: optimization advice for memcpy: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+thomas.2.c(148,5):remark #34014: optimization advice for memcpy: increase the source's alignment to 16 (and use __assume_aligned) to speed up library implementation
+thomas.2.c(148,5):remark #34026: call to memcpy implemented as a call to optimized library version
+thomas.2.c(149,5):remark #34014: optimization advice for memcpy: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+thomas.2.c(149,5):remark #34014: optimization advice for memcpy: increase the source's alignment to 16 (and use __assume_aligned) to speed up library implementation
+thomas.2.c(149,5):remark #34026: call to memcpy implemented as a call to optimized library version
+thomas.2.c(150,5):remark #34014: optimization advice for memcpy: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+thomas.2.c(150,5):remark #34014: optimization advice for memcpy: increase the source's alignment to 16 (and use __assume_aligned) to speed up library implementation
+thomas.2.c(150,5):remark #34026: call to memcpy implemented as a call to optimized library version
+thomas.2.c(151,5):remark #34014: optimization advice for memcpy: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+thomas.2.c(151,5):remark #34014: optimization advice for memcpy: increase the source's alignment to 16 (and use __assume_aligned) to speed up library implementation
+thomas.2.c(151,5):remark #34026: call to memcpy implemented as a call to optimized library version
+thomas.2.c(132,1):remark #34051: REGISTER ALLOCATION : [main] thomas.2.c:132
 
     Hardware registers
         Reserved     :    2[ rsp rip]
@@ -209,19 +302,19 @@ thomas.2.c(97,1):remark #34051: REGISTER ALLOCATION : [main] thomas.2.c:97
         Assigned     :   30[ rax rdx rcx rbx rsi rdi r8-r15 zmm0-zmm15]
         
     Routine temporaries
-        Total         :     550
-            Global    :      97
-            Local     :     453
-        Regenerable   :     111
-        Spilled       :      12
+        Total         :     521
+            Global    :      89
+            Local     :     432
+        Regenerable   :      65
+        Spilled       :      10
         
     Routine stack
-        Variables     :     108 bytes*
-            Reads     :      12 [3.00e+06 ~ 0.9%]
-            Writes    :      12 [0.00e+00 ~ 0.0%]
-        Spills        :     136 bytes*
-            Reads     :      29 [4.00e+06 ~ 1.2%]
-            Writes    :      25 [1.13e+01 ~ 0.0%]
+        Variables     :      52 bytes*
+            Reads     :       8 [7.95e+00 ~ 0.0%]
+            Writes    :       2 [2.00e+00 ~ 0.0%]
+        Spills        :      40 bytes*
+            Reads     :       9 [2.00e+06 ~ 0.5%]
+            Writes    :       9 [8.49e+00 ~ 0.0%]
     
     Notes
     
@@ -235,120 +328,147 @@ Begin optimization report for: generate_problem()
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (generate_problem()) [2/5=40.0%] thomas.2.c(11,1)
+INLINE REPORT: (generate_problem()) [2/6=33.3%] thomas.2.c(12,1)
 
 
     Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
 
 
-LOOP BEGIN at thomas.2.c(16,5)
-<Peeled loop for vectorization>
-   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+LOOP BEGIN at thomas.2.c(17,5)
+<Peeled loop for vectorization, Distributed chunk1>
    remark #25015: Estimate of max trip count of loop=3
 LOOP END
 
-LOOP BEGIN at thomas.2.c(16,5)
-   remark #17109: LOOP WAS AUTO-PARALLELIZED
-   remark #17101: parallel loop shared={ } private={ } firstprivate={ a b c f i } lastprivate={ } firstlastprivate={ counter } reduction={ }
-   remark #25427: Loop Statements Reordered
-   remark #15389: vectorization support: reference b[i] has unaligned access   [ thomas.2.c(19,9) ]
-   remark #15388: vectorization support: reference a[i] has aligned access   [ thomas.2.c(18,9) ]
-   remark #15389: vectorization support: reference f[i] has unaligned access   [ thomas.2.c(21,9) ]
-   remark #15389: vectorization support: reference c[i] has unaligned access   [ thomas.2.c(20,9) ]
-   remark #15388: vectorization support: reference a[i] has aligned access   [ thomas.2.c(20,16) ]
-   remark #15389: vectorization support: reference b[i] has unaligned access   [ thomas.2.c(20,23) ]
-   remark #15381: vectorization support: unaligned access used inside loop body
-   remark #15412: vectorization support: streaming store was generated for a[i]   [ thomas.2.c(18,9) ]
+LOOP BEGIN at thomas.2.c(17,5)
+<Distributed chunk1>
+   remark #25426: Loop Distributed (3 way) 
+   remark #15388: vectorization support: reference f[i] has aligned access   [ thomas.2.c(22,9) ]
+   remark #15412: vectorization support: streaming store was generated for f[i]   [ thomas.2.c(22,9) ]
+   remark #15412: vectorization support: streaming store was generated for f[i]   [ thomas.2.c(22,9) ]
    remark #15305: vectorization support: vector length 4
-   remark #15309: vectorization support: normalized vectorization overhead 0.099
-   remark #15300: LOOP WAS VECTORIZED
+   remark #15309: vectorization support: normalized vectorization overhead 0.116
+   remark #15301: PARTIAL LOOP WAS VECTORIZED
    remark #15442: entire loop may be executed in remainder
-   remark #15448: unmasked aligned unit stride loads: 1 
    remark #15449: unmasked aligned unit stride stores: 1 
-   remark #15450: unmasked unaligned unit stride loads: 1 
-   remark #15451: unmasked unaligned unit stride stores: 3 
-   remark #15467: unmasked aligned streaming stores: 1 
+   remark #15467: unmasked aligned streaming stores: 2 
    remark #15475: --- begin vector cost summary ---
-   remark #15476: scalar cost: 74 
-   remark #15477: vector cost: 63.250 
-   remark #15478: estimated potential speedup: 1.160 
-   remark #15482: vectorized math library calls: 3 
-   remark #15487: type converts: 3 
+   remark #15476: scalar cost: 22 
+   remark #15477: vector cost: 21.500 
+   remark #15478: estimated potential speedup: 1.020 
+   remark #15482: vectorized math library calls: 1 
+   remark #15487: type converts: 1 
    remark #15488: --- end vector cost summary ---
    remark #25015: Estimate of max trip count of loop=249999
 LOOP END
 
-LOOP BEGIN at thomas.2.c(16,5)
-<Remainder loop for vectorization>
-   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
-   remark #25015: Estimate of max trip count of loop=999998
+LOOP BEGIN at thomas.2.c(17,5)
+<Remainder loop for vectorization, Distributed chunk1>
 LOOP END
 
-LOOP BEGIN at thomas.2.c(16,5)
-<Peeled loop for vectorization>
+LOOP BEGIN at thomas.2.c(17,5)
+<Peeled loop for vectorization, Distributed chunk2>
    remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
    remark #25015: Estimate of max trip count of loop=3
 LOOP END
 
-LOOP BEGIN at thomas.2.c(16,5)
-   remark #25427: Loop Statements Reordered
-   remark #15389: vectorization support: reference b[i] has unaligned access   [ thomas.2.c(19,9) ]
-   remark #15388: vectorization support: reference a[i] has aligned access   [ thomas.2.c(18,9) ]
-   remark #15389: vectorization support: reference f[i] has unaligned access   [ thomas.2.c(21,9) ]
-   remark #15389: vectorization support: reference c[i] has unaligned access   [ thomas.2.c(20,9) ]
-   remark #15388: vectorization support: reference a[i] has aligned access   [ thomas.2.c(20,16) ]
-   remark #15389: vectorization support: reference b[i] has unaligned access   [ thomas.2.c(20,23) ]
-   remark #15381: vectorization support: unaligned access used inside loop body
-   remark #15412: vectorization support: streaming store was generated for a[i]   [ thomas.2.c(18,9) ]
+LOOP BEGIN at thomas.2.c(17,5)
+<Distributed chunk2>
+   remark #15388: vectorization support: reference a[i] has aligned access   [ thomas.2.c(19,9) ]
+   remark #15388: vectorization support: reference b[i] has aligned access   [ thomas.2.c(20,9) ]
+   remark #15412: vectorization support: streaming store was generated for b[i]   [ thomas.2.c(20,9) ]
+   remark #15412: vectorization support: streaming store was generated for b[i]   [ thomas.2.c(20,9) ]
+   remark #15412: vectorization support: streaming store was generated for a[i]   [ thomas.2.c(19,9) ]
+   remark #15412: vectorization support: streaming store was generated for a[i]   [ thomas.2.c(19,9) ]
+   remark #15412: vectorization support: streaming store was generated for b[i]   [ thomas.2.c(20,9) ]
+   remark #15412: vectorization support: streaming store was generated for b[i]   [ thomas.2.c(20,9) ]
    remark #15305: vectorization support: vector length 4
-   remark #15309: vectorization support: normalized vectorization overhead 0.099
-   remark #15300: LOOP WAS VECTORIZED
+   remark #15309: vectorization support: normalized vectorization overhead 0.103
+   remark #15301: PARTIAL LOOP WAS VECTORIZED
    remark #15442: entire loop may be executed in remainder
-   remark #15448: unmasked aligned unit stride loads: 1 
-   remark #15449: unmasked aligned unit stride stores: 1 
-   remark #15450: unmasked unaligned unit stride loads: 1 
-   remark #15451: unmasked unaligned unit stride stores: 3 
-   remark #15467: unmasked aligned streaming stores: 1 
+   remark #15449: unmasked aligned unit stride stores: 2 
+   remark #15467: unmasked aligned streaming stores: 6 
    remark #15475: --- begin vector cost summary ---
-   remark #15476: scalar cost: 74 
-   remark #15477: vector cost: 63.250 
-   remark #15478: estimated potential speedup: 1.160 
-   remark #15482: vectorized math library calls: 3 
-   remark #15487: type converts: 3 
+   remark #15476: scalar cost: 43 
+   remark #15477: vector cost: 41.250 
+   remark #15478: estimated potential speedup: 1.040 
+   remark #15482: vectorized math library calls: 2 
+   remark #15487: type converts: 2 
    remark #15488: --- end vector cost summary ---
    remark #25015: Estimate of max trip count of loop=249999
 LOOP END
 
-LOOP BEGIN at thomas.2.c(16,5)
-<Remainder loop for vectorization>
+LOOP BEGIN at thomas.2.c(17,5)
+<Alternate Alignment Vectorized Loop, Distributed chunk2>
+   remark #25015: Estimate of max trip count of loop=249999
+LOOP END
+
+LOOP BEGIN at thomas.2.c(17,5)
+<Remainder loop for vectorization, Distributed chunk2>
    remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
-   remark #25015: Estimate of max trip count of loop=999998
+LOOP END
+
+LOOP BEGIN at thomas.2.c(17,5)
+<Peeled loop for vectorization, Distributed chunk3>
+   remark #25015: Estimate of max trip count of loop=1
+LOOP END
+
+LOOP BEGIN at thomas.2.c(17,5)
+<Distributed chunk3>
+   remark #15388: vectorization support: reference c[i] has aligned access   [ thomas.2.c(21,9) ]
+   remark #15389: vectorization support: reference a[i] has unaligned access   [ thomas.2.c(21,16) ]
+   remark #15388: vectorization support: reference b[i] has aligned access   [ thomas.2.c(21,23) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15412: vectorization support: streaming store was generated for c[i]   [ thomas.2.c(21,9) ]
+   remark #15412: vectorization support: streaming store was generated for c[i]   [ thomas.2.c(21,9) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15309: vectorization support: normalized vectorization overhead 2.125
+   remark #15301: PARTIAL LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15467: unmasked aligned streaming stores: 2 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 10 
+   remark #15477: vector cost: 4.000 
+   remark #15478: estimated potential speedup: 2.490 
+   remark #15488: --- end vector cost summary ---
+   remark #25015: Estimate of max trip count of loop=499999
+LOOP END
+
+LOOP BEGIN at thomas.2.c(17,5)
+<Alternate Alignment Vectorized Loop, Distributed chunk3>
+   remark #25015: Estimate of max trip count of loop=499999
+LOOP END
+
+LOOP BEGIN at thomas.2.c(17,5)
+<Remainder loop for vectorization, Distributed chunk3>
 LOOP END
 
     Report from: Code generation optimizations [cg]
 
-thomas.2.c(11,1):remark #34051: REGISTER ALLOCATION : [generate_problem] thomas.2.c:11
+thomas.2.c(12,1):remark #34051: REGISTER ALLOCATION : [generate_problem] thomas.2.c:12
 
     Hardware registers
         Reserved     :    2[ rsp rip]
         Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
         Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   31[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0-zmm15]
+        Assigned     :   26[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0-zmm5 zmm8-zmm12]
         
     Routine temporaries
-        Total         :     427
-            Global    :      72
-            Local     :     355
-        Regenerable   :      66
-        Spilled       :       8
+        Total         :     217
+            Global    :      39
+            Local     :     178
+        Regenerable   :      24
+        Spilled       :       9
         
     Routine stack
-        Variables     :      56 bytes*
-            Reads     :       4 [3.00e+06 ~ 1.1%]
-            Writes    :      10 [0.00e+00 ~ 0.0%]
-        Spills        :     112 bytes*
-            Reads     :      24 [2.00e+06 ~ 0.7%]
-            Writes    :      22 [9.38e+00 ~ 0.0%]
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      24 bytes*
+            Reads     :       5 [1.00e+06 ~ 0.5%]
+            Writes    :       5 [4.69e+00 ~ 0.0%]
     
     Notes
     
@@ -362,36 +482,32 @@ Begin optimization report for: print_tridiagonal_matrice()
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (print_tridiagonal_matrice()) [3/5=60.0%] thomas.2.c(29,1)
-  -> EXTERN: (37,17) printf(const char *__restrict__, ...)
-  -> EXTERN: (43,21) printf(const char *__restrict__, ...)
-  -> EXTERN: (49,25) printf(const char *__restrict__, ...)
-  -> EXTERN: (53,25) printf(const char *__restrict__, ...)
-  -> EXTERN: (58,9) printf(const char *__restrict__, ...)
+INLINE REPORT: (print_tridiagonal_matrice()) [3/6=50.0%] thomas.2.c(30,1)
+  -> EXTERN: (38,17) printf(const char *__restrict__, ...)
+  -> EXTERN: (44,21) printf(const char *__restrict__, ...)
+  -> EXTERN: (50,25) printf(const char *__restrict__, ...)
+  -> EXTERN: (54,25) printf(const char *__restrict__, ...)
+  -> EXTERN: (59,9) printf(const char *__restrict__, ...)
 
 
     Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
 
 
-LOOP BEGIN at thomas.2.c(31,5)
-   remark #17104: loop was not parallelized: existence of parallel dependence
-   remark #17106: parallel dependence: assumed OUTPUT dependence between call:printf(const char *__restrict__, ...) (37:17) and call:printf(const char *__restrict__, ...) (58:9)
-   remark #17106: parallel dependence: assumed OUTPUT dependence between call:printf(const char *__restrict__, ...) (58:9) and call:printf(const char *__restrict__, ...) (37:17)
+LOOP BEGIN at thomas.2.c(32,5)
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
 
-   LOOP BEGIN at thomas.2.c(33,9)
-      remark #17104: loop was not parallelized: existence of parallel dependence
-      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.2.c(37,17) ]
-      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.2.c(43,21) ]
-      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.2.c(49,25) ]
-      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.2.c(53,25) ]
+   LOOP BEGIN at thomas.2.c(34,9)
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.2.c(38,17) ]
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.2.c(44,21) ]
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.2.c(50,25) ]
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.2.c(54,25) ]
       remark #15344: loop was not vectorized: vector dependence prevents vectorization
    LOOP END
 LOOP END
 
     Report from: Code generation optimizations [cg]
 
-thomas.2.c(29,1):remark #34051: REGISTER ALLOCATION : [print_tridiagonal_matrice] thomas.2.c:29
+thomas.2.c(30,1):remark #34051: REGISTER ALLOCATION : [print_tridiagonal_matrice] thomas.2.c:30
 
     Hardware registers
         Reserved     :    2[ rsp rip]
@@ -411,7 +527,7 @@ thomas.2.c(29,1):remark #34051: REGISTER ALLOCATION : [print_tridiagonal_matrice
             Reads     :       0 [0.00e+00 ~ 0.0%]
             Writes    :       0 [0.00e+00 ~ 0.0%]
         Spills        :      16 bytes*
-            Reads     :       2 [4.79e+07 ~ 3.0%]
+            Reads     :       2 [4.79e+07 ~ 3.3%]
             Writes    :       2 [2.44e-04 ~ 0.0%]
     
     Notes
@@ -422,34 +538,30 @@ thomas.2.c(29,1):remark #34051: REGISTER ALLOCATION : [print_tridiagonal_matrice
 
 ===========================================================================
 
-Begin optimization report for: print_matrice(float *, int, int)
+Begin optimization report for: print_matrice(double *, int, int)
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (print_matrice(float *, int, int)) [4/5=80.0%] thomas.2.c(63,1)
-  -> EXTERN: (69,13) printf(const char *__restrict__, ...)
-  -> EXTERN: (71,9) printf(const char *__restrict__, ...)
+INLINE REPORT: (print_matrice(double *, int, int)) [4/6=66.7%] thomas.2.c(98,1)
+  -> EXTERN: (104,13) printf(const char *__restrict__, ...)
+  -> EXTERN: (106,9) printf(const char *__restrict__, ...)
 
 
     Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
 
 
-LOOP BEGIN at thomas.2.c(65,5)
-   remark #17104: loop was not parallelized: existence of parallel dependence
-   remark #17106: parallel dependence: assumed OUTPUT dependence between call:printf(const char *__restrict__, ...) (69:13) and call:printf(const char *__restrict__, ...) (71:9)
-   remark #17106: parallel dependence: assumed OUTPUT dependence between call:printf(const char *__restrict__, ...) (71:9) and call:printf(const char *__restrict__, ...) (69:13)
+LOOP BEGIN at thomas.2.c(100,5)
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
 
-   LOOP BEGIN at thomas.2.c(67,9)
-      remark #17104: loop was not parallelized: existence of parallel dependence
-      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.2.c(69,13) ]
+   LOOP BEGIN at thomas.2.c(102,9)
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.2.c(104,13) ]
       remark #15344: loop was not vectorized: vector dependence prevents vectorization
    LOOP END
 LOOP END
 
     Report from: Code generation optimizations [cg]
 
-thomas.2.c(63,1):remark #34051: REGISTER ALLOCATION : [print_matrice] thomas.2.c:63
+thomas.2.c(98,1):remark #34051: REGISTER ALLOCATION : [print_matrice] thomas.2.c:98
 
     Hardware registers
         Reserved     :    2[ rsp rip]
@@ -469,8 +581,8 @@ thomas.2.c(63,1):remark #34051: REGISTER ALLOCATION : [print_matrice] thomas.2.c
             Reads     :       0 [0.00e+00 ~ 0.0%]
             Writes    :       0 [0.00e+00 ~ 0.0%]
         Spills        :      64 bytes*
-            Reads     :       8 [1.44e+01 ~ 4.1%]
-            Writes    :       8 [1.44e+01 ~ 4.1%]
+            Reads     :       8 [1.44e+01 ~ 4.8%]
+            Writes    :       8 [1.44e+01 ~ 4.8%]
     
     Notes
     
@@ -484,31 +596,29 @@ Begin optimization report for: solve()
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (solve()) [5/5=100.0%] thomas.2.c(76,1)
+INLINE REPORT: (solve()) [5/6=83.3%] thomas.2.c(111,1)
 
 
     Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
 
 
-LOOP BEGIN at thomas.2.c(78,5)
+LOOP BEGIN at thomas.2.c(113,5)
 <Distributed chunk1>
-   remark #17104: loop was not parallelized: existence of parallel dependence
-   remark #17106: parallel dependence: assumed FLOW dependence between c[i] (82:9) and c[i-1] (80:38)
    remark #25426: Loop Distributed (2 way) 
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed FLOW dependence between c[i] (82:9) and c[i-1] (80:38)
+   remark #15346: vector dependence: assumed FLOW dependence between c[i] (117:9) and c[i-1] (115:39)
 LOOP END
 
-LOOP BEGIN at thomas.2.c(78,5)
+LOOP BEGIN at thomas.2.c(113,5)
 <Peeled loop for vectorization, Distributed chunk2>
-   remark #25015: Estimate of max trip count of loop=3
+   remark #25015: Estimate of max trip count of loop=1
 LOOP END
 
-LOOP BEGIN at thomas.2.c(78,5)
+LOOP BEGIN at thomas.2.c(113,5)
 <Distributed chunk2>
-   remark #15388: vectorization support: reference a[i] has aligned access   [ thomas.2.c(81,9) ]
-   remark #15412: vectorization support: streaming store was generated for a[i]   [ thomas.2.c(81,9) ]
-   remark #15305: vectorization support: vector length 4
+   remark #15388: vectorization support: reference a[i] has aligned access   [ thomas.2.c(116,9) ]
+   remark #15412: vectorization support: streaming store was generated for a[i]   [ thomas.2.c(116,9) ]
+   remark #15305: vectorization support: vector length 2
    remark #15309: vectorization support: normalized vectorization overhead 3.333
    remark #15301: PARTIAL LOOP WAS VECTORIZED
    remark #15442: entire loop may be executed in remainder
@@ -516,38 +626,36 @@ LOOP BEGIN at thomas.2.c(78,5)
    remark #15467: unmasked aligned streaming stores: 1 
    remark #15475: --- begin vector cost summary ---
    remark #15476: scalar cost: 4 
-   remark #15477: vector cost: 0.750 
-   remark #15478: estimated potential speedup: 5.330 
+   remark #15477: vector cost: 1.500 
+   remark #15478: estimated potential speedup: 2.660 
    remark #15488: --- end vector cost summary ---
-   remark #25015: Estimate of max trip count of loop=249999
+   remark #25015: Estimate of max trip count of loop=499999
 LOOP END
 
-LOOP BEGIN at thomas.2.c(78,5)
+LOOP BEGIN at thomas.2.c(113,5)
 <Remainder loop for vectorization, Distributed chunk2>
 LOOP END
 
-LOOP BEGIN at thomas.2.c(88,5)
-   remark #17104: loop was not parallelized: existence of parallel dependence
-   remark #17106: parallel dependence: assumed FLOW dependence between f[i] (90:9) and f[i+1] (90:9)
+LOOP BEGIN at thomas.2.c(123,5)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed FLOW dependence between f[i] (90:9) and f[i+1] (90:9)
+   remark #15346: vector dependence: assumed FLOW dependence between f[i] (125:9) and f[i+1] (125:9)
 LOOP END
 
     Report from: Code generation optimizations [cg]
 
-thomas.2.c(76,1):remark #34051: REGISTER ALLOCATION : [solve] thomas.2.c:76
+thomas.2.c(111,1):remark #34051: REGISTER ALLOCATION : [solve] thomas.2.c:111
 
     Hardware registers
         Reserved     :    2[ rsp rip]
         Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
         Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   13[ rax rdx rcx rsi rdi r8-r10 zmm0-zmm4]
+        Assigned     :   12[ rax rdx rcx rsi rdi r8-r9 zmm0-zmm4]
         
     Routine temporaries
-        Total         :      46
-            Global    :      20
-            Local     :      26
-        Regenerable   :       4
+        Total         :      43
+            Global    :      18
+            Local     :      25
+        Regenerable   :       3
         Spilled       :       0
         
     Routine stack
@@ -557,6 +665,66 @@ thomas.2.c(76,1):remark #34051: REGISTER ALLOCATION : [solve] thomas.2.c:76
         Spills        :       0 bytes*
             Reads     :       0 [0.00e+00 ~ 0.0%]
             Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: print_initial_matrice()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (print_initial_matrice()) [6/6=100.0%] thomas.2.c(64,1)
+  -> EXTERN: (72,17) printf(const char *__restrict__, ...)
+  -> EXTERN: (78,21) printf(const char *__restrict__, ...)
+  -> EXTERN: (84,25) printf(const char *__restrict__, ...)
+  -> EXTERN: (88,25) printf(const char *__restrict__, ...)
+  -> EXTERN: (93,9) printf(const char *__restrict__, ...)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at thomas.2.c(66,5)
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at thomas.2.c(68,9)
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.2.c(72,17) ]
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.2.c(78,21) ]
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.2.c(84,25) ]
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.2.c(88,25) ]
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+thomas.2.c(64,1):remark #34051: REGISTER ALLOCATION : [print_initial_matrice] thomas.2.c:64
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rax rdx rcx rbx rbp rsi rdi r12-r15 zmm0]
+        
+    Routine temporaries
+        Total         :      34
+            Global    :      15
+            Local     :      19
+        Regenerable   :      14
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       2 [4.79e+07 ~ 3.3%]
+            Writes    :       2 [2.44e-04 ~ 0.0%]
     
     Notes
     

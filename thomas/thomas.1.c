@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include <omp.h>
+#include <math.h>
 
 #define X 1000000
 #define THREAD_NUM 8
 
-float *a, *b, *c, *d, *f, *g;
+double *a, *b, *c, *d, *f, *g, *ai, *bi, *ci, *fi;
 
 void generate_problem()
 {
@@ -30,6 +31,40 @@ void generate_problem()
     f[X - 1] = (X - 1) * (X - 1) % 25 + 1;
     d[X - 1] = 0;
     g[X - 1] = 0;
+}
+
+void print_initial_matrice()
+{
+    int i, j;
+    for (i = 0; i < X; i++)
+    {
+        for (j = 0; j < X; j++)
+        {
+            if (j == i - 1)
+            {
+                printf("%f\t", ai[i]);
+            }
+            else
+            {
+                if (j == i)
+                {
+                    printf("%f\t", ci[i]);
+                }
+                else
+                {
+                    if (j == i + 1)
+                    {
+                        printf("%f\t", bi[i]);
+                    }
+                    else
+                    {
+                        printf("0\t\t");
+                    }
+                }
+            }
+        }
+        printf("\n");
+    }
 }
 
 void print_tridiagonal_matrice()
@@ -81,7 +116,7 @@ void print_tridiagonal_matrice()
     }
 }
 
-void print_matrice(float M[], int r, int c)
+void print_matrice(double M[], int r, int c)
 {
     int i, j;
     for (i = 0; i < r; i++)
@@ -111,7 +146,7 @@ void solve()
         }
         for (int i = start + 1; i < end; i++)
         {
-            float multiplicator = a[i] / c[i - 1];
+            double multiplicator = a[i] / c[i - 1];
             a[i] = 0;
             c[i] = c[i] - b[i - 1] * multiplicator;
             f[i] = f[i] - f[i - 1] * multiplicator;
@@ -127,7 +162,7 @@ void solve()
 
         for (int i = end - 2; i >= start && i > 0; i--)
         {
-            float multiplicator = b[i - 1] / c[i];
+            double multiplicator = b[i - 1] / c[i];
             b[i - 1] = 0;
             if (i != start)
             {
@@ -140,7 +175,7 @@ void solve()
         if (thread_num != 0)
         {
 
-            float multiplicator = b[start - 1] / c[start];
+            double multiplicator = b[start - 1] / c[start];
             a[start] = d[start];
             c[start - 1] = c[start - 1] - a[start] * multiplicator;
         }
@@ -149,7 +184,7 @@ void solve()
         {
             for (int i = chunkSize * 2 - 1; i < X; i = i + chunkSize)
             {
-                float multiplicator = d[i] / c[i - chunkSize];
+                double multiplicator = d[i] / c[i - chunkSize];
                 d[i] = 0;
                 c[i] = c[i] - g[i - chunkSize] * multiplicator;
                 f[i] = f[i] - f[i - chunkSize] * multiplicator;
@@ -187,20 +222,35 @@ void solve()
 
 void main()
 {
-    a = (float *)malloc(X * sizeof(float));
-    b = (float *)malloc(X * sizeof(float));
-    c = (float *)malloc(X * sizeof(float));
-    d = (float *)malloc(X * sizeof(float));
-    f = (float *)malloc(X * sizeof(float));
-    g = (float *)malloc(X * sizeof(float));
+    a = (double *)malloc(X * sizeof(double));
+    b = (double *)malloc(X * sizeof(double));
+    c = (double *)malloc(X * sizeof(double));
+    d = (double *)malloc(X * sizeof(double));
+    f = (double *)malloc(X * sizeof(double));
+    g = (double *)malloc(X * sizeof(double));
+
+    ai = (double *)malloc(X * sizeof(double));
+    bi = (double *)malloc(X * sizeof(double));
+    ci = (double *)malloc(X * sizeof(double));
+    fi = (double *)malloc(X * sizeof(double));
 
     struct timeval start, middle, stop;
     double seconds;
     gettimeofday(&start, NULL);
     generate_problem();
 
+    memcpy(ai, a, X * sizeof(double));
+    memcpy(bi, b, X * sizeof(double));
+    memcpy(ci, c, X * sizeof(double));
+    memcpy(fi, f, X * sizeof(double));
+
     // print_tridiagonal_matrice();
     // print_matrice(f, X, 1);
+
+    // printf("\n");
+
+    // print_initial_matrice();
+    // print_matrice(fi, X, 1);
 
     printf("starting calculation\n");
     gettimeofday(&middle, NULL);
@@ -216,16 +266,32 @@ void main()
     // printf("\n");
     // print_matrice(f, X, 1);
 
-    for (int i = 0; i < 10; i++)
+    // printf("\n");
+
+    // print_initial_matrice();
+    // print_matrice(fi, X, 1);
+
+    // for (int i = 0; i < 10; i++)
+    // {
+    //     printf("%f, ", f[i]);
+    // }
+    // printf("\n...\n");
+    // for (int i = X - 11; i < X; i++)
+    // {
+    //     printf("%f, ", f[i]);
+    // }
+    // printf("\n");
+
+    double sum = 0;
+
+    sum += fabs(f[0] * ci[0] + f[1] * bi[0] - fi[0]);
+    for (int i = 1; i < X - 1; i++)
     {
-        printf("%f, ", f[i]);
+        sum += fabs(f[i - 1] * ai[i] + f[i] * ci[i] + f[i + 1] * bi[i] - fi[i]);
     }
-    printf("\n...\n");
-    for (int i = X - 11; i < X; i++)
-    {
-        printf("%f, ", f[i]);
-    }
-    printf("\n");
+    sum += fabs(f[X - 2] * ai[X - 1] + f[X - 1] * ci[X - 1] - fi[X - 1]);
+
+    printf("sum: %lf\n", sum);
 
     double all_time = (double)(stop.tv_sec - start.tv_sec + (stop.tv_usec - start.tv_usec) / 1000000.0);
     double calculation_time = (double)(stop.tv_sec - middle.tv_sec + (stop.tv_usec - middle.tv_usec) / 1000000.0);
