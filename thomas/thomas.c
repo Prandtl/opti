@@ -9,19 +9,19 @@ float *A, *f;
 void generate_problem()
 {
     int counter = 1;
-    A[0] = counter++ % 25 + 1;
     A[1] = counter++ % 25 + 1;
+    A[0] = counter++ % 25 + 1;
     f[0] = 0;
     for (int i = 1; i < X - 1; i++)
     {
         A[i * X + i - 1] = counter++ % 25 + 1;
-        A[i * X + i] = counter++ % 25 + 1;
         A[i * X + i + 1] = counter++ % 25 + 1;
+        A[i * X + i] = A[i * X + i - 1] + A[i * X + i + 1] + 1;
 
-        f[i] = i * i;
+        f[i] = i * i % 25 + 1;
     }
     A[(X - 1) * X + X - 2] = counter++ % 25 + 1;
-    A[(X - 1) * X + X - 1] = counter++ % 25 + 1;
+    A[(X - 1) * X + X - 1] = counter++ + 1;
     f[X - 1] = (X - 1) * (X - 1) % 25 + 1;
 }
 

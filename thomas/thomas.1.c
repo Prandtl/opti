@@ -4,27 +4,81 @@
 #include <omp.h>
 
 #define X 10000
-#define THREAD_NUM 4
+#define THREAD_NUM 8
 
-float *A, *f;
+float *a, *b, *c, *d, *f, *g;
 
 void generate_problem()
 {
     int counter = 1;
-    A[0] = counter++ % 25 + 1;
-    A[1] = counter++ % 25 + 1;
+    b[0] = counter++ % 25 + 1;
+    c[0] = counter++ % 25 + 1;
     f[0] = 0;
+    d[0] = 0;
+    g[0] = 0;
     for (int i = 1; i < X - 1; i++)
     {
-        A[i * X + i - 1] = counter++ % 25 + 1;
-        A[i * X + i] = counter++ % 25 + 1;
-        A[i * X + i + 1] = counter++ % 25 + 1;
-
-        f[i] = i * i;
+        a[i] = counter++ % 25 + 1;
+        b[i] = counter++ % 25 + 1;
+        c[i] = a[i] + b[i] + 1;
+        f[i] = i * i % 25 + 1;
+        d[i] = 0;
+        g[i] = 0;
     }
-    A[(X - 1) * X + X - 2] = counter++ % 25 + 1;
-    A[(X - 1) * X + X - 1] = counter++ % 25 + 1;
+    a[X - 1] = counter++ % 25 + 1;
+    c[X - 1] = counter++ + 1;
     f[X - 1] = (X - 1) * (X - 1) % 25 + 1;
+    d[X - 1] = 0;
+    g[X - 1] = 0;
+}
+
+void print_tridiagonal_matrice()
+{
+    int chunkSize = X / THREAD_NUM;
+    int i, j;
+    for (i = 0; i < X; i++)
+    {
+        for (j = 0; j < X; j++)
+        {
+            if (j == i - 1)
+            {
+                printf("%f\t", a[i]);
+            }
+            else
+            {
+                if (j == i)
+                {
+                    printf("%f\t", c[i]);
+                }
+                else
+                {
+                    if (j == i + 1)
+                    {
+                        printf("%f\t", b[i]);
+                    }
+                    else
+                    {
+                        if ((j + 1) % chunkSize == 0 && i <= j + chunkSize && i > j)
+                        {
+                            printf("%f\t", d[i]);
+                        }
+                        else
+                        {
+                            if ((j + 1) % chunkSize == 0 && i >= j - chunkSize && i < j)
+                            {
+                                printf("%f\t", g[i]);
+                            }
+                            else
+                            {
+                                printf("0\t\t");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        printf("\n");
+    }
 }
 
 void print_matrice(float M[], int r, int c)
@@ -51,70 +105,81 @@ void solve()
         int start = chunkSize * thread_num;
         int end = chunkSize * (thread_num + 1);
         // printf("%d: %d - %d\n", thread_num, start, end - 1);
-
+        if (thread_num != 0)
+        {
+            d[start] = a[start];
+        }
         for (int i = start + 1; i < end; i++)
         {
-            float multiplicator = A[i * X + i - 1] / A[(i - 1) * X + i - 1];
-            A[i * X + i - 1] = 0;
-            A[i * X + i] = A[i * X + i] - A[(i - 1) * X + i] * multiplicator;
+            float multiplicator = a[i] / c[i - 1];
+            a[i] = 0;
+            c[i] = c[i] - b[i - 1] * multiplicator;
             f[i] = f[i] - f[i - 1] * multiplicator;
             if (thread_num != 0)
             {
-                A[i * X + start - 1] = -A[(i - 1) * X + start - 1] * multiplicator;
+                d[i] = -d[i - 1] * multiplicator;
             }
         }
 
 #pragma omp barrier
 
+        g[end - 2] = b[end - 2];
+
         for (int i = end - 2; i >= start && i > 0; i--)
         {
-            float multiplicator = A[(i - 1) * X + i] / A[i * X + i];
-            A[(i - 1) * X + start - 1] = A[(i - 1) * X + start - 1] - A[i * X + start - 1] * multiplicator;
-            A[(i - 1) * X + i - 1] = A[(i - 1) * X + i - 1] - A[i * X + i - 1] * multiplicator;
-            A[(i - 1) * X + i] = 0;
-            A[(i - 1) * X + end - 1] = A[(i - 1) * X + end - 1] - A[i * X + end - 1] * multiplicator;
+            float multiplicator = b[i - 1] / c[i];
+            b[i - 1] = 0;
+            if (i != start)
+            {
+                d[i - 1] = d[i - 1] - d[i] * multiplicator;
+            }
+            g[i - 1] = g[i - 1] - g[i] * multiplicator;
             f[i - 1] = f[i - 1] - f[i] * multiplicator;
+        }
+
+        if (thread_num != 0)
+        {
+
+            float multiplicator = b[start - 1] / c[start];
+            a[start] = d[start];
+            c[start - 1] = c[start - 1] - a[start] * multiplicator;
         }
 
 #pragma omp single
         {
-
             for (int i = chunkSize * 2 - 1; i < X; i = i + chunkSize)
             {
-                float multiplicator = A[i * X + i - chunkSize] / A[(i - chunkSize) * X + i - chunkSize];
-                A[i * X + i - chunkSize] = 0;
-                A[i * X + i] = A[i * X + i] - A[(i - chunkSize) * X + i] * multiplicator;
-                f[i] = f[i] - f[i - 1] * multiplicator;
+                float multiplicator = d[i] / c[i - chunkSize];
+                d[i] = 0;
+                c[i] = c[i] - g[i - chunkSize] * multiplicator;
+                f[i] = f[i] - f[i - chunkSize] * multiplicator;
             }
 
-            f[X - 1] = f[X - 1] / A[(X - 1) * X + X - 1];
-            A[(X - 1) * X + X - 1] = 1;
+            f[X - 1] = f[X - 1] / c[X - 1];
+            c[X - 1] = 1;
 
             for (int i = X - chunkSize - 1; i > 0; i = i - chunkSize)
             {
-                f[i] = (f[i] - A[i * X + i + chunkSize] * f[i + chunkSize]) / A[i * X + i];
-                A[i * X + i] = 1;
-                A[i * X + i + chunkSize] = 0;
+                f[i] = (f[i] - g[i] * f[i + chunkSize]) / c[i];
+                c[i] = 1;
+                g[i] = 0;
             }
         }
 
-        // print_matrice(A, X, X);
-        // printf("\n");
-        // print_matrice(f, 1, X);
         for (int i = start; i < end - 1; i++)
         {
             if (thread_num == 0)
             {
-                f[i] = (f[i] - A[i * X + chunkSize - 1] * f[start + chunkSize - 1]) / A[i * X + i];
-                A[i * X + chunkSize - 1] = 0;
-                A[i * X + i] = 1;
+                f[i] = (f[i] - g[i] * f[chunkSize - 1]) / c[i];
+                g[i] = 0;
+                c[i] = 1;
             }
             else
             {
-                f[i] = (f[i] - A[i * X + chunkSize - 1] * f[start + chunkSize - 1] - A[i * X + start - 1] * f[start - 1]) / A[i * X + i];
-                A[i * X + start + chunkSize - 1] = 0;
-                A[i * X + start - 1] = 0;
-                A[i * X + i] = 1;
+                f[i] = (f[i] - g[i] * f[start + chunkSize - 1] - d[i] * f[start - 1]) / c[i];
+                g[i] = 0;
+                d[i] = 0;
+                c[i] = 1;
             }
         }
     }
@@ -122,17 +187,19 @@ void solve()
 
 void main()
 {
-    A = (float *)malloc(X * X * sizeof(float));
-    printf("A x = ");
+    a = (float *)malloc(X * sizeof(float));
+    b = (float *)malloc(X * sizeof(float));
+    c = (float *)malloc(X * sizeof(float));
+    d = (float *)malloc(X * sizeof(float));
     f = (float *)malloc(X * sizeof(float));
-    printf("f.\n");
+    g = (float *)malloc(X * sizeof(float));
 
     struct timeval start, middle, stop;
     double seconds;
     gettimeofday(&start, NULL);
     generate_problem();
 
-    // print_matrice(A, X, X);
+    // print_tridiagonal_matrice();
     // print_matrice(f, X, 1);
 
     printf("starting calculation\n");
@@ -141,8 +208,13 @@ void main()
     gettimeofday(&stop, NULL);
     printf("finished.\n");
 
-    // print_matrice(A, X, X);
-    // print_matrice(f, 1, X);
+    // print_tridiagonal_matrice();
+    // printf("\n");
+    // print_matrice(d, X, 1);
+    // printf("\n");
+    // print_matrice(g, X, 1);
+    // printf("\n");
+    // print_matrice(f, X, 1);
 
     for (int i = 0; i < 10; i++)
     {
@@ -160,6 +232,10 @@ void main()
     printf("calculation took %lf s\n", calculation_time);
     printf("everything took %lf s\n", all_time);
 
-    free(A);
+    free(a);
+    free(b);
+    free(c);
+    free(d);
     free(f);
+    free(g);
 }
