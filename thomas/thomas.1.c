@@ -3,7 +3,7 @@
 #include <sys/time.h>
 #include <omp.h>
 
-#define X 10000
+#define X 1000000
 #define THREAD_NUM 8
 
 float *a, *b, *c, *d, *f, *g;
@@ -228,7 +228,7 @@ void main()
     printf("\n");
 
     double all_time = (double)(stop.tv_sec - start.tv_sec + (stop.tv_usec - start.tv_usec) / 1000000.0);
-    double calculation_time = (double)(stop.tv_sec - middle.tv_sec + (middle.tv_usec - middle.tv_usec) / 1000000.0);
+    double calculation_time = (double)(stop.tv_sec - middle.tv_sec + (stop.tv_usec - middle.tv_usec) / 1000000.0);
     printf("calculation took %lf s\n", calculation_time);
     printf("everything took %lf s\n", all_time);
 

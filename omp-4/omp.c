@@ -40,13 +40,12 @@ void main()
         }
     }
 
-
     int *blockSieve = (int *)malloc((number) * sizeof(int));
     memset(blockSieve, 0, number);
 
     counter = 0;
 
-    #pragma omp parallel for reduction(+:counter)
+#pragma omp parallel for reduction(+ : counter)
     for (int k = 1, maxk = number / blocksize; k < maxk; k++)
     {
         int start = k * blocksize + 1;
@@ -62,7 +61,7 @@ void main()
                 blockSieve[s] = 1;
             }
         }
-        
+
         for (int j = start; j < start + blocksize; j++)
         {
             // printf("%d: %d\n",j , blockSieve[j]);
@@ -75,10 +74,24 @@ void main()
             }
         }
     }
-    // printf("%d\n", initialPrimesCounter);
-    // for(int i = 0; i< initialPrimesCounter;i++){
-    //     printf("%d\n", inititalPrimes[i]);
+    printf("%d\n", initialPrimesCounter);
+    for(int i = 0; i< initialPrimesCounter;i++){
+        printf("%d\n", inititalPrimes[i]);
 
+    }
+    // int i = 0;
+    // int cntr = 100;
+    // while (counter > 0)
+    // {
+    //     if (i == number)
+    //     {
+    //         break;
+    //     }
+    //     if (blockSieve[i] == 0){
+    //         cntr--;
+    //         printf("%d, ", i);
+    //     }
+    //     i++;
     // }
 
     gettimeofday(&stop, NULL);

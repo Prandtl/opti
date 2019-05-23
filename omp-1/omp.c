@@ -5,7 +5,7 @@
 
 double func(double x)
 {
-    return x * x + 2 * sqrt(x) - 1;
+    return sin(x)/(x * x) + 2 * sqrt(x) - 1;
 }
 
 void main()
@@ -22,28 +22,23 @@ void main()
     int *a = (int *)malloc(size * sizeof(int));
     for (i = 0; i < size; i++)
     {
-        a[i] = rand() % 1000;
+        a[i] = sin(i) * 10;
     }
-
+    printf("calculation\n");
     gettimeofday(&start, NULL);
-    #pragma omp parallel
+    #pragma omp parallel for
+    for (i = 0; i < size; i++)
     {
-        #pragma omp for
-        for (i = 0; i < size; i++)
-        {
-            a[i] = func(a[i]);
-        }
+        a[i] = func(a[i]);
     }
     gettimeofday(&stop, NULL);
     double duration = (double)(stop.tv_sec - start.tv_sec + (stop.tv_usec - start.tv_usec) / 1000000.0);
     printf("calculation took %lf s.\n", duration);
 
-    if (a[0] > 1000)
+    double sum = 0;
+    for(int i=0;i<size;i++)
     {
-        printf("first one is more than 1k\n");
+        sum += a[i];
     }
-    else
-    {
-        printf("first one is smaller than 1k\n");
-    }
+    printf("sum= %lf\n", sum);
 }

@@ -1,0 +1,478 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+Intel(R) C Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 19.0.3.199 Build 20190206
+
+Compiler options: -o thomas.1.o -qopenmp -qopt-report=5
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: true
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: 10000
+  -inline-max-per-compile: 500000
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: main()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (main()) [1/5=20.0%] thomas.1.c(189,1)
+  -> EXTERN: (190,18) malloc(size_t)
+  -> EXTERN: (191,18) malloc(size_t)
+  -> EXTERN: (192,18) malloc(size_t)
+  -> EXTERN: (193,18) malloc(size_t)
+  -> EXTERN: (194,18) malloc(size_t)
+  -> EXTERN: (195,18) malloc(size_t)
+  -> EXTERN: (199,5) gettimeofday(struct timeval *__restrict__, __timezone_ptr_t)
+  -> INLINE: (200,5) generate_problem() (isz = 103) (sz = 106)
+  -> EXTERN: (205,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (206,5) gettimeofday(struct timeval *__restrict__, __timezone_ptr_t)
+  -> (207,5) solve() (isz = 404) (sz = 407)
+     [[ Inlining would exceed -inline-max-size value (407>253) <1>]]
+  -> EXTERN: (208,5) gettimeofday(struct timeval *__restrict__, __timezone_ptr_t)
+  -> EXTERN: (209,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (221,9) printf(const char *__restrict__, ...)
+  -> EXTERN: (223,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (226,9) printf(const char *__restrict__, ...)
+  -> EXTERN: (228,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (232,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (233,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (235,5) free(void *)
+  -> EXTERN: (236,5) free(void *)
+  -> EXTERN: (237,5) free(void *)
+  -> EXTERN: (238,5) free(void *)
+  -> EXTERN: (239,5) free(void *)
+  -> EXTERN: (240,5) free(void *)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at thomas.1.c(19,5) inlined into thomas.1.c(200,5)
+<Peeled loop for vectorization>
+   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+   remark #25015: Estimate of max trip count of loop=3
+LOOP END
+
+LOOP BEGIN at thomas.1.c(19,5) inlined into thomas.1.c(200,5)
+   remark #25427: Loop Statements Reordered
+   remark #15389: vectorization support: reference f[i] has unaligned access   [ thomas.1.c(24,9) ]
+   remark #15389: vectorization support: reference d[i] has unaligned access   [ thomas.1.c(25,9) ]
+   remark #15389: vectorization support: reference g[i] has unaligned access   [ thomas.1.c(26,9) ]
+   remark #15389: vectorization support: reference a[i] has unaligned access   [ thomas.1.c(21,9) ]
+   remark #15388: vectorization support: reference b[i] has aligned access   [ thomas.1.c(22,9) ]
+   remark #15389: vectorization support: reference c[i] has unaligned access   [ thomas.1.c(23,9) ]
+   remark #15389: vectorization support: reference a[i] has unaligned access   [ thomas.1.c(23,16) ]
+   remark #15388: vectorization support: reference b[i] has aligned access   [ thomas.1.c(23,23) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.118
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 5 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 81 
+   remark #15477: vector cost: 65.750 
+   remark #15478: estimated potential speedup: 1.230 
+   remark #15482: vectorized math library calls: 3 
+   remark #15487: type converts: 3 
+   remark #15488: --- end vector cost summary ---
+   remark #25015: Estimate of max trip count of loop=2499
+LOOP END
+
+LOOP BEGIN at thomas.1.c(19,5) inlined into thomas.1.c(200,5)
+<Remainder loop for vectorization>
+   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+LOOP END
+
+LOOP BEGIN at thomas.1.c(219,5)
+   remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.1.c(221,9) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+LOOP END
+
+LOOP BEGIN at thomas.1.c(224,5)
+   remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.1.c(226,9) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+thomas.1.c(189,1):remark #34051: REGISTER ALLOCATION : [main] thomas.1.c:189
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   30[ rax rdx rcx rbx rsi rdi r8-r15 zmm0-zmm15]
+        
+    Routine temporaries
+        Total         :     279
+            Global    :      54
+            Local     :     225
+        Regenerable   :      65
+        Spilled       :      10
+        
+    Routine stack
+        Variables     :      52 bytes*
+            Reads     :       7 [5.00e+00 ~ 0.0%]
+            Writes    :       2 [0.00e+00 ~ 0.0%]
+        Spills        :      40 bytes*
+            Reads     :       8 [3.00e+04 ~ 2.1%]
+            Writes    :       5 [5.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: solve()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (solve()) [2/5=40.0%] thomas.1.c(98,1)
+  -> EXTERN: (103,26) omp_get_thread_num(void)
+
+
+    Report from: OpenMP optimizations [openmp]
+
+OpenMP Construct at thomas.1.c(124,1)
+remark #16207: OpenMP multithreaded code generation for BARRIER was successful
+OpenMP Construct at thomas.1.c(148,1)
+remark #16204: OpenMP multithreaded code generation for SINGLE was successful
+OpenMP Construct at thomas.1.c(101,1)
+remark #16201: OpenMP DEFINED REGION WAS PARALLELIZED
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at thomas.1.c(112,9)
+<Predicate Optimized v1>
+   remark #25422: Invariant Condition at line 118 hoisted out of this loop
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed FLOW dependence between c[i] (116:13) and c[i-1] (114:42)
+LOOP END
+
+LOOP BEGIN at thomas.1.c(112,9)
+<Predicate Optimized v2>
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed FLOW dependence between c[i] (116:13) and c[i-1] (114:42)
+LOOP END
+
+LOOP BEGIN at thomas.1.c(128,9)
+   remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ thomas.1.c(137,13) ]
+LOOP END
+
+LOOP BEGIN at thomas.1.c(150,13)
+<Multiversioned v1>
+   remark #25228: Loop multiversioned for Data Dependence
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed ANTI dependence between d[i] (152:46) and d[i] (153:17)
+   remark #15346: vector dependence: assumed FLOW dependence between d[i] (153:17) and d[i] (152:46)
+LOOP END
+
+LOOP BEGIN at thomas.1.c(150,13)
+<Multiversioned v2>
+   remark #15304: loop was not vectorized: non-vectorizable loop instance from multiversioning
+LOOP END
+
+LOOP BEGIN at thomas.1.c(161,13)
+<Multiversioned v1>
+   remark #25228: Loop multiversioned for Data Dependence
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed FLOW dependence between f[i] (163:17) and f[i] (163:17)
+   remark #15346: vector dependence: assumed ANTI dependence between f[i] (163:17) and f[i] (163:17)
+LOOP END
+
+LOOP BEGIN at thomas.1.c(161,13)
+<Multiversioned v2>
+   remark #15304: loop was not vectorized: non-vectorizable loop instance from multiversioning
+LOOP END
+
+LOOP BEGIN at thomas.1.c(169,9)
+<Predicate Optimized v1>
+   remark #25422: Invariant Condition at line 171 hoisted out of this loop
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed FLOW dependence between f[i] (173:17) and f[chunkSize-1] (173:17)
+   remark #15346: vector dependence: assumed ANTI dependence between f[chunkSize-1] (173:17) and f[i] (173:17)
+   remark #25439: unrolled with remainder by 2  
+LOOP END
+
+LOOP BEGIN at thomas.1.c(169,9)
+<Remainder, Predicate Optimized v1>
+LOOP END
+
+LOOP BEGIN at thomas.1.c(169,9)
+<Predicate Optimized v2>
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed FLOW dependence between f[i] (179:17) and f[start+chunkSize-1] (179:17)
+   remark #15346: vector dependence: assumed ANTI dependence between f[start+chunkSize-1] (179:17) and f[i] (179:17)
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+thomas.1.c(98,1):remark #34051: REGISTER ALLOCATION : [solve] thomas.1.c:98
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   21[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0-zmm5]
+        
+    Routine temporaries
+        Total         :     380
+            Global    :     127
+            Local     :     253
+        Regenerable   :      48
+        Spilled       :      10
+        
+    Routine stack
+        Variables     :       8 bytes*
+            Reads     :       3 [0.00e+00 ~ 0.0%]
+            Writes    :       2 [2.00e+00 ~ 0.3%]
+        Spills        :     128 bytes*
+            Reads     :      38 [1.36e+01 ~ 1.9%]
+            Writes    :      25 [8.88e+00 ~ 1.2%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: generate_problem()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (generate_problem()) [3/5=60.0%] thomas.1.c(12,1)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at thomas.1.c(19,5)
+<Peeled loop for vectorization>
+   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+   remark #25015: Estimate of max trip count of loop=3
+LOOP END
+
+LOOP BEGIN at thomas.1.c(19,5)
+   remark #25427: Loop Statements Reordered
+   remark #15389: vectorization support: reference f[i] has unaligned access   [ thomas.1.c(24,9) ]
+   remark #15389: vectorization support: reference d[i] has unaligned access   [ thomas.1.c(25,9) ]
+   remark #15389: vectorization support: reference g[i] has unaligned access   [ thomas.1.c(26,9) ]
+   remark #15389: vectorization support: reference a[i] has unaligned access   [ thomas.1.c(21,9) ]
+   remark #15388: vectorization support: reference b[i] has aligned access   [ thomas.1.c(22,9) ]
+   remark #15389: vectorization support: reference c[i] has unaligned access   [ thomas.1.c(23,9) ]
+   remark #15389: vectorization support: reference a[i] has unaligned access   [ thomas.1.c(23,16) ]
+   remark #15388: vectorization support: reference b[i] has aligned access   [ thomas.1.c(23,23) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.118
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 5 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 81 
+   remark #15477: vector cost: 65.750 
+   remark #15478: estimated potential speedup: 1.230 
+   remark #15482: vectorized math library calls: 3 
+   remark #15487: type converts: 3 
+   remark #15488: --- end vector cost summary ---
+   remark #25015: Estimate of max trip count of loop=2499
+LOOP END
+
+LOOP BEGIN at thomas.1.c(19,5)
+<Remainder loop for vectorization>
+   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+thomas.1.c(12,1):remark #34051: REGISTER ALLOCATION : [generate_problem] thomas.1.c:12
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   31[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0-zmm15]
+        
+    Routine temporaries
+        Total         :     191
+            Global    :      32
+            Local     :     159
+        Regenerable   :      21
+        Spilled       :       9
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      24 bytes*
+            Reads     :       5 [2.00e+04 ~ 1.4%]
+            Writes    :       3 [3.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: print_tridiagonal_matrice()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (print_tridiagonal_matrice()) [4/5=80.0%] thomas.1.c(36,1)
+  -> EXTERN: (45,17) printf(const char *__restrict__, ...)
+  -> EXTERN: (51,21) printf(const char *__restrict__, ...)
+  -> EXTERN: (57,25) printf(const char *__restrict__, ...)
+  -> EXTERN: (63,29) printf(const char *__restrict__, ...)
+  -> EXTERN: (69,33) printf(const char *__restrict__, ...)
+  -> EXTERN: (73,33) printf(const char *__restrict__, ...)
+  -> EXTERN: (80,9) printf(const char *__restrict__, ...)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at thomas.1.c(39,5)
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at thomas.1.c(41,9)
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.1.c(45,17) ]
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.1.c(51,21) ]
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.1.c(57,25) ]
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.1.c(63,29) ]
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.1.c(69,33) ]
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.1.c(73,33) ]
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   LOOP END
+LOOP END
+
+Fusion of IFs performed in print_tridiagonal_matrice at line 61
+
+    Report from: Code generation optimizations [cg]
+
+thomas.1.c(36,1):remark #34051: REGISTER ALLOCATION : [print_tridiagonal_matrice] thomas.1.c:36
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   14[ rax rdx rcx rbx rbp rsi rdi r8-r9 r12-r15 zmm0]
+        
+    Routine temporaries
+        Total         :      58
+            Global    :      18
+            Local     :      40
+        Regenerable   :      21
+        Spilled       :      11
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      40 bytes*
+            Reads     :       5 [6.07e+07 ~ 2.9%]
+            Writes    :       5 [5.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: print_matrice(float *, int, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (print_matrice(float *, int, int)) [5/5=100.0%] thomas.1.c(85,1)
+  -> EXTERN: (91,13) printf(const char *__restrict__, ...)
+  -> EXTERN: (93,9) printf(const char *__restrict__, ...)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at thomas.1.c(87,5)
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at thomas.1.c(89,9)
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ thomas.1.c(91,13) ]
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+thomas.1.c(85,1):remark #34051: REGISTER ALLOCATION : [print_matrice] thomas.1.c:85
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   13[ rax rdx rcx rbx rbp rsi rdi r8 r12-r15 zmm0]
+        
+    Routine temporaries
+        Total         :      25
+            Global    :      16
+            Local     :       9
+        Regenerable   :       5
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      64 bytes*
+            Reads     :       8 [1.44e+01 ~ 4.1%]
+            Writes    :       8 [1.44e+01 ~ 4.1%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINING FOOTNOTES:
+
+<1> The function is larger than the inliner would normally inline.  Use the
+    option -inline-max-size to increase the size of any function that would
+    normally be inlined, add "inline __attribute__((always_inline))" to the
+    declaration of the called function, or add "#pragma forceinline" before
+    the call site.
+

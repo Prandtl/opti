@@ -20,9 +20,6 @@ void main()
     printf("Enter the number\n");
     scanf("%d", &size);
 
-    printf("Enter team size\n");
-    scanf("%d", &teamsize);
-
     int *a = (int *)malloc(size * sizeof(int));
     int *b = (int *)malloc(size * sizeof(int));
     for (i = 0; i < size; i++)
@@ -33,7 +30,7 @@ void main()
 
     gettimeofday(&start, NULL);
 
-    #pragma omp parallel for reduction(+:a[:size]) num_threads(teamsize)
+    #pragma omp parallel for reduction(+:a[:size]) num_threads(8)
     for (int n = 0; n < size; n++)
     {
         a[b[n]]++;
