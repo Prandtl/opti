@@ -19,11 +19,11 @@ void generate_problem()
         a[i] = counter++ % 25 + 1;
         b[i] = counter++ % 25 + 1;
         c[i] = a[i] + b[i] + 1;
-        f[i] = i * i % 25 + 1;
+        f[i] = fmod(sin(i) * i, 25) + 1;
     }
     a[X - 1] = counter++ % 25 + 1;
     c[X - 1] = counter++ + 1;
-    f[X - 1] = (X - 1) * (X - 1) % 25 + 1;
+    f[X - 1] = fmod(sin(X - 1) * (X - 1), 25) + 1;
 }
 
 void print_tridiagonal_matrice()

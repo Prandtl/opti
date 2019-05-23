@@ -4,7 +4,7 @@
 #include <omp.h>
 #include <math.h>
 
-#define X 1000000
+#define X 10000
 #define THREAD_NUM 8
 
 double *a, *b, *c, *d, *f, *g, *ai, *bi, *ci, *fi;
@@ -22,15 +22,36 @@ void generate_problem()
         a[i] = counter++ % 25 + 1;
         b[i] = counter++ % 25 + 1;
         c[i] = a[i] + b[i] + 1;
-        f[i] = i * i % 25 + 1;
+        f[i] = fmod(sin(i) * i, 25) + 1;
         d[i] = 0;
         g[i] = 0;
     }
     a[X - 1] = counter++ % 25 + 1;
     c[X - 1] = counter++ + 1;
-    f[X - 1] = (X - 1) * (X - 1) % 25 + 1;
+    f[X - 1] = fmod(sin(X - 1) * (X - 1), 25) + 1;
     d[X - 1] = 0;
     g[X - 1] = 0;
+
+    // int counter = 1;
+    // b[0] = 1;
+    // c[0] = 2;
+    // f[0] = 1;
+    // d[0] = 0;
+    // g[0] = 0;
+    // for (int i = 1; i < X - 1; i++)
+    // {
+    //     a[i] = 1;
+    //     b[i] = 1;
+    //     c[i] = 2;
+    //     f[i] = i + 1;
+    //     d[i] = 0;
+    //     g[i] = 0;
+    // }
+    // a[X - 1] = 1;
+    // c[X - 1] = 2;
+    // f[X - 1] = X;
+    // d[X - 1] = 0;
+    // g[X - 1] = 0;
 }
 
 void print_initial_matrice()
@@ -157,10 +178,9 @@ void solve()
         }
 
 #pragma omp barrier
-
         g[end - 2] = b[end - 2];
 
-        for (int i = end - 2; i >= start && i > 0; i--)
+        for (int i = end - 2; i > start && i > 0; i--)
         {
             double multiplicator = b[i - 1] / c[i];
             b[i - 1] = 0;
@@ -174,12 +194,15 @@ void solve()
 
         if (thread_num != 0)
         {
-
             double multiplicator = b[start - 1] / c[start];
             a[start] = d[start];
+            b[start - 1] = 0;
             c[start - 1] = c[start - 1] - a[start] * multiplicator;
+            g[start - 1] = g[start - 1] - g[start] * multiplicator;
+            f[start - 1] = f[start - 1] - f[start] * multiplicator;
         }
 
+#pragma omp barrier
 #pragma omp single
         {
             for (int i = chunkSize * 2 - 1; i < X; i = i + chunkSize)
@@ -288,6 +311,7 @@ void main()
     for (int i = 1; i < X - 1; i++)
     {
         sum += fabs(f[i - 1] * ai[i] + f[i] * ci[i] + f[i + 1] * bi[i] - fi[i]);
+        // printf("sum: %lf\n", sum);
     }
     sum += fabs(f[X - 2] * ai[X - 1] + f[X - 1] * ci[X - 1] - fi[X - 1]);
 
