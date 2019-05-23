@@ -4,7 +4,7 @@ See "https://software.intel.com/en-us/intel-advisor-xe" for details.
 
 Intel(R) C Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 19.0.3.199 Build 20190206
 
-Compiler options: -o sieve.o -O2 -qopt-report=5 -parallel
+Compiler options: -o sieve.o -parallel -qopt-report=5
 
     Report from: Interprocedural optimizations [ipo]
 
@@ -96,16 +96,18 @@ LOOP BEGIN at sieve.c(20,5)
    remark #25015: Estimate of max trip count of loop=1024
 LOOP END
 
-LOOP BEGIN at sieve.c(32,5)
-   remark #17109: LOOP WAS AUTO-PARALLELIZED
-   remark #17101: parallel loop shared={ .2 } private={ } firstprivate={ maxiter current j primes number i } lastprivate={ } firstlastprivate={ } reduction={ }
+LOOP BEGIN at sieve.c(30,5)
+   remark #17104: loop was not parallelized: existence of parallel dependence
+   remark #17106: parallel dependence: assumed ANTI dependence between primes[i] (34:13) and primes[j*current] (39:17)
+   remark #17106: parallel dependence: assumed FLOW dependence between primes[j*current] (39:17) and primes[i] (34:13)
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
-   remark #25015: Estimate of max trip count of loop=512
 
    LOOP BEGIN at sieve.c(37,13)
-   <Multiversioned v2>
+      remark #17104: loop was not parallelized: existence of parallel dependence
+      remark #17106: parallel dependence: assumed OUTPUT dependence between primes[j*current] (39:17) and primes[j*current] (39:17)
+      remark #17106: parallel dependence: assumed OUTPUT dependence between primes[j*current] (39:17) and primes[j*current] (39:17)
       remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
-      remark #15329: vectorization support: non-unit strided store was emulated for the variable <primes[j]>, stride is unknown to compiler   [ sieve.c(39,17) ]
+      remark #15329: vectorization support: non-unit strided store was emulated for the variable <primes[j*current]>, stride is unknown to compiler   [ sieve.c(39,17) ]
       remark #15305: vectorization support: vector length 4
       remark #15453: unmasked strided stores: 1 
       remark #15475: --- begin vector cost summary ---
@@ -188,24 +190,6 @@ LOOP BEGIN at sieve.c(20,5)
    remark #25015: Estimate of max trip count of loop=1024
 LOOP END
 
-LOOP BEGIN at sieve.c(32,5)
-   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
-   remark #25015: Estimate of max trip count of loop=512
-
-   LOOP BEGIN at sieve.c(37,13)
-   <Multiversioned v2>
-      remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
-      remark #15329: vectorization support: non-unit strided store was emulated for the variable <primes[j]>, stride is unknown to compiler   [ sieve.c(39,17) ]
-      remark #15305: vectorization support: vector length 4
-      remark #15453: unmasked strided stores: 1 
-      remark #15475: --- begin vector cost summary ---
-      remark #15476: scalar cost: 3 
-      remark #15477: vector cost: 8.750 
-      remark #15478: estimated potential speedup: 0.340 
-      remark #15488: --- end vector cost summary ---
-   LOOP END
-LOOP END
-
 LOOP BEGIN at sieve.c(49,5)
    remark #15305: vectorization support: vector length 4
    remark #15399: vectorization support: unroll factor set to 4
@@ -250,19 +234,19 @@ sieve.c(7,1):remark #34051: REGISTER ALLOCATION : [main] sieve.c:7
         Assigned     :   21[ rax rdx rcx rbx rsi rdi r8-r15 zmm0-zmm6]
         
     Routine temporaries
-        Total         :     497
-            Global    :     135
-            Local     :     362
-        Regenerable   :     152
+        Total         :     409
+            Global    :     111
+            Local     :     298
+        Regenerable   :     118
         Spilled       :       1
         
     Routine stack
-        Variables     :     164 bytes*
-            Reads     :      16 [3.69e+03 ~ 3.3%]
-            Writes    :      30 [0.00e+00 ~ 0.0%]
+        Variables     :     116 bytes*
+            Reads     :      14 [2.77e+03 ~ 3.3%]
+            Writes    :      19 [0.00e+00 ~ 0.0%]
         Spills        :      48 bytes*
-            Reads     :      21 [5.00e+00 ~ 0.0%]
-            Writes    :      21 [0.00e+00 ~ 0.0%]
+            Reads     :      18 [5.00e+00 ~ 0.0%]
+            Writes    :      16 [0.00e+00 ~ 0.0%]
     
     Notes
     

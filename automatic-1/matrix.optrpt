@@ -4,7 +4,7 @@ See "https://software.intel.com/en-us/intel-advisor-xe" for details.
 
 Intel(R) C Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 19.0.3.199 Build 20190206
 
-Compiler options: -parallel -o matrix.o -O2 -qopt-report=5
+Compiler options: -o matrix.o -parallel -qopt-report=5
 
     Report from: Interprocedural optimizations [ipo]
 
@@ -32,77 +32,116 @@ Begin optimization report for: main()
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (main()) [1/4=25.0%] matrix.c(66,1)
-  -> EXTERN: (67,18) malloc(size_t)
-  -> EXTERN: (67,48) printf(const char *__restrict__, ...)
-  -> EXTERN: (68,18) malloc(size_t)
-  -> EXTERN: (68,48) printf(const char *__restrict__, ...)
-  -> EXTERN: (69,18) malloc(size_t)
-  -> EXTERN: (69,48) printf(const char *__restrict__, ...)
-  -> INLINE: (74,5) generate_matrices() (isz = 86) (sz = 89)
-    -> EXTERN: (14,5) srand(unsigned int)
-    -> EXTERN: (14,21) time(long long *)
-    -> EXTERN: (20,35) rand(void)
-    -> EXTERN: (27,35) rand(void)
-  -> EXTERN: (76,5) printf(const char *__restrict__, ...)
-  -> EXTERN: (77,5) gettimeofday(struct timeval *__restrict__, __timezone_ptr_t)
-  -> INLINE: (78,5) multiply_matrices(float *, float *, float *, int, int, int) (isz = 52) (sz = 67)
-  -> EXTERN: (79,5) gettimeofday(struct timeval *__restrict__, __timezone_ptr_t)
-  -> EXTERN: (80,5) printf(const char *__restrict__, ...)
-  -> EXTERN: (84,9) printf(const char *__restrict__, ...)
-  -> EXTERN: (87,9) printf(const char *__restrict__, ...)
-  -> EXTERN: (90,5) printf(const char *__restrict__, ...)
-  -> EXTERN: (92,5) free(void *)
-  -> EXTERN: (93,5) free(void *)
-  -> EXTERN: (94,5) free(void *)
+INLINE REPORT: (main()) [1/4=25.0%] matrix.c(69,1)
+  -> EXTERN: (70,18) malloc(size_t)
+  -> EXTERN: (71,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (72,18) malloc(size_t)
+  -> EXTERN: (73,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (74,18) malloc(size_t)
+  -> EXTERN: (75,5) printf(const char *__restrict__, ...)
+  -> INLINE: (80,5) generate_matrices() (isz = 76) (sz = 79)
+    -> EXTERN: (15,5) srand(unsigned int)
+    -> EXTERN: (15,21) time(long long *)
+  -> EXTERN: (82,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (83,5) gettimeofday(struct timeval *__restrict__, __timezone_ptr_t)
+  -> INLINE: (84,5) multiply_matrices(float *, float *, float *, int, int, int) (isz = 53) (sz = 68)
+  -> EXTERN: (85,5) gettimeofday(struct timeval *__restrict__, __timezone_ptr_t)
+  -> EXTERN: (86,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (90,9) printf(const char *__restrict__, ...)
+  -> EXTERN: (94,9) printf(const char *__restrict__, ...)
+  -> EXTERN: (97,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (108,5) printf(const char *__restrict__, ...)
+  -> EXTERN: (109,5) free(void *)
+  -> EXTERN: (110,5) free(void *)
+  -> EXTERN: (111,5) free(void *)
 
 
     Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
 
 
-LOOP BEGIN at matrix.c(16,5) inlined into matrix.c(74,5)
-   remark #17104: loop was not parallelized: existence of parallel dependence
-   remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (20:35) and call:rand(void) (20:35)
-   remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (20:35) and call:rand(void) (20:35)
-   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
-
-   LOOP BEGIN at matrix.c(18,9) inlined into matrix.c(74,5)
-      remark #17104: loop was not parallelized: existence of parallel dependence
-      remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (20:35) and call:rand(void) (20:35)
-      remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (20:35) and call:rand(void) (20:35)
-      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix.c(20,35) ]
-   LOOP END
-LOOP END
-
-LOOP BEGIN at matrix.c(23,5) inlined into matrix.c(74,5)
-   remark #17104: loop was not parallelized: existence of parallel dependence
-   remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (27:35) and call:rand(void) (27:35)
-   remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (27:35) and call:rand(void) (27:35)
-   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
-
-   LOOP BEGIN at matrix.c(25,9) inlined into matrix.c(74,5)
-      remark #17104: loop was not parallelized: existence of parallel dependence
-      remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (27:35) and call:rand(void) (27:35)
-      remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (27:35) and call:rand(void) (27:35)
-      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix.c(27,35) ]
-   LOOP END
-LOOP END
-
-LOOP BEGIN at matrix.c(47,5) inlined into matrix.c(78,5)
+LOOP BEGIN at matrix.c(17,5) inlined into matrix.c(80,5)
    remark #17109: LOOP WAS AUTO-PARALLELIZED
-   remark #17101: parallel loop shared={ } private={ } firstprivate={ k j sum B A C i } lastprivate={ } firstlastprivate={ } reduction={ }
+   remark #17101: parallel loop shared={ } private={ } firstprivate={ j A i } lastprivate={ } firstlastprivate={ } reduction={ }
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+   remark #25015: Estimate of max trip count of loop=1000
+
+   LOOP BEGIN at matrix.c(19,9) inlined into matrix.c(80,5)
+   <Peeled loop for vectorization>
+      remark #25015: Estimate of max trip count of loop=3
+   LOOP END
+
+   LOOP BEGIN at matrix.c(19,9) inlined into matrix.c(80,5)
+      remark #15388: vectorization support: reference A[i*1000+j] has aligned access   [ matrix.c(21,13) ]
+      remark #15305: vectorization support: vector length 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.132
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15442: entire loop may be executed in remainder
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 21 
+      remark #15477: vector cost: 19.000 
+      remark #15478: estimated potential speedup: 1.100 
+      remark #15482: vectorized math library calls: 1 
+      remark #15487: type converts: 1 
+      remark #15488: --- end vector cost summary ---
+      remark #25015: Estimate of max trip count of loop=250
+   LOOP END
+
+   LOOP BEGIN at matrix.c(19,9) inlined into matrix.c(80,5)
+   <Remainder loop for vectorization>
+      remark #25015: Estimate of max trip count of loop=1000
+   LOOP END
+LOOP END
+
+LOOP BEGIN at matrix.c(24,5) inlined into matrix.c(80,5)
+   remark #17109: LOOP WAS AUTO-PARALLELIZED
+   remark #17101: parallel loop shared={ } private={ } firstprivate={ j B i } lastprivate={ } firstlastprivate={ } reduction={ }
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+   remark #25015: Estimate of max trip count of loop=1000
+
+   LOOP BEGIN at matrix.c(26,9) inlined into matrix.c(80,5)
+   <Peeled loop for vectorization>
+      remark #25015: Estimate of max trip count of loop=3
+   LOOP END
+
+   LOOP BEGIN at matrix.c(26,9) inlined into matrix.c(80,5)
+      remark #15388: vectorization support: reference B[i*1000+j] has aligned access   [ matrix.c(28,13) ]
+      remark #15305: vectorization support: vector length 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.132
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15442: entire loop may be executed in remainder
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 21 
+      remark #15477: vector cost: 19.000 
+      remark #15478: estimated potential speedup: 1.100 
+      remark #15482: vectorized math library calls: 1 
+      remark #15487: type converts: 1 
+      remark #15488: --- end vector cost summary ---
+      remark #25015: Estimate of max trip count of loop=250
+   LOOP END
+
+   LOOP BEGIN at matrix.c(26,9) inlined into matrix.c(80,5)
+   <Remainder loop for vectorization>
+      remark #25015: Estimate of max trip count of loop=1000
+   LOOP END
+LOOP END
+
+LOOP BEGIN at matrix.c(51,5) inlined into matrix.c(84,5)
+   remark #17103: loop was not parallelized: noparallel directive 
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
-   remark #25015: Estimate of max trip count of loop=2000
 
-   LOOP BEGIN at matrix.c(50,9) inlined into matrix.c(78,5)
+   LOOP BEGIN at matrix.c(54,9) inlined into matrix.c(84,5)
+      remark #17109: LOOP WAS AUTO-PARALLELIZED
+      remark #17101: parallel loop shared={ } private={ } firstprivate={ k sum B A C j i } lastprivate={ } firstlastprivate={ } reduction={ }
       remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
-      remark #25015: Estimate of max trip count of loop=2000
+      remark #25015: Estimate of max trip count of loop=1000
 
-      LOOP BEGIN at matrix.c(53,13) inlined into matrix.c(78,5)
-         remark #15389: vectorization support: reference A[i*2000+k] has unaligned access   [ matrix.c(55,29) ]
+      LOOP BEGIN at matrix.c(57,13) inlined into matrix.c(84,5)
+         remark #15389: vectorization support: reference A[i*1000+k] has unaligned access   [ matrix.c(59,29) ]
          remark #15381: vectorization support: unaligned access used inside loop body
          remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
-         remark #15328: vectorization support: non-unit strided load was emulated for the variable <B[k*2000+j]>, stride is 2000   [ matrix.c(55,44) ]
+         remark #15328: vectorization support: non-unit strided load was emulated for the variable <B[k*1000+j]>, stride is 1000   [ matrix.c(59,44) ]
          remark #15305: vectorization support: vector length 4
          remark #15399: vectorization support: unroll factor set to 4
          remark #15309: vectorization support: normalized vectorization overhead 0.207
@@ -116,68 +155,171 @@ LOOP BEGIN at matrix.c(47,5) inlined into matrix.c(78,5)
          remark #25438: unrolled without remainder by 2  
          remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
          remark #25457: Number of partial sums replaced: 1
-         remark #25015: Estimate of max trip count of loop=2000
+         remark #25015: Estimate of max trip count of loop=1000
       LOOP END
    LOOP END
 LOOP END
 
-LOOP BEGIN at matrix.c(47,5) inlined into matrix.c(78,5)
-   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
-   remark #25015: Estimate of max trip count of loop=2000
+LOOP BEGIN at matrix.c(100,5)
+   remark #17108: loop was not parallelized: insufficient computational work
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+   remark #25015: Estimate of max trip count of loop=1000
 
-   LOOP BEGIN at matrix.c(50,9) inlined into matrix.c(78,5)
+   LOOP BEGIN at matrix.c(102,9)
+      remark #17108: loop was not parallelized: insufficient computational work
+      remark #15389: vectorization support: reference C[i*1000+j] has unaligned access   [ matrix.c(104,20) ]
+      remark #15381: vectorization support: unaligned access used inside loop body
+      remark #15305: vectorization support: vector length 2
+      remark #15399: vectorization support: unroll factor set to 8
+      remark #15309: vectorization support: normalized vectorization overhead 0.062
+      remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ matrix.c(99,16) ]
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15450: unmasked unaligned unit stride loads: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 7 
+      remark #15477: vector cost: 3.000 
+      remark #15478: estimated potential speedup: 2.300 
+      remark #15487: type converts: 1 
+      remark #15488: --- end vector cost summary ---
+      remark #25015: Estimate of max trip count of loop=62
+   LOOP END
+
+   LOOP BEGIN at matrix.c(102,9)
+   <Remainder loop for vectorization>
+      remark #15389: vectorization support: reference C[i*1000+j] has unaligned access   [ matrix.c(104,20) ]
+      remark #15381: vectorization support: unaligned access used inside loop body
+      remark #15305: vectorization support: vector length 2
+      remark #15309: vectorization support: normalized vectorization overhead 1.625
+      remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ matrix.c(99,16) ]
+      remark #15301: REMAINDER LOOP WAS VECTORIZED
+      remark #15450: unmasked unaligned unit stride loads: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 7 
+      remark #15477: vector cost: 3.000 
+      remark #15478: estimated potential speedup: 2.300 
+      remark #15487: type converts: 1 
+      remark #15488: --- end vector cost summary ---
+      remark #25015: Estimate of max trip count of loop=4
+   LOOP END
+LOOP END
+
+LOOP BEGIN at matrix.c(17,5) inlined into matrix.c(80,5)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+   remark #25015: Estimate of max trip count of loop=1000
+
+   LOOP BEGIN at matrix.c(19,9) inlined into matrix.c(80,5)
+   <Peeled loop for vectorization>
+      remark #25015: Estimate of max trip count of loop=3
+   LOOP END
+
+   LOOP BEGIN at matrix.c(19,9) inlined into matrix.c(80,5)
       remark #17107: loop was not parallelized: inner loop
-      remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
-      remark #25015: Estimate of max trip count of loop=2000
+      remark #15388: vectorization support: reference A[i*1000+j] has aligned access   [ matrix.c(21,13) ]
+      remark #15305: vectorization support: vector length 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.132
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15442: entire loop may be executed in remainder
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 21 
+      remark #15477: vector cost: 19.000 
+      remark #15478: estimated potential speedup: 1.100 
+      remark #15482: vectorized math library calls: 1 
+      remark #15487: type converts: 1 
+      remark #15488: --- end vector cost summary ---
+      remark #25015: Estimate of max trip count of loop=250
+   LOOP END
 
-      LOOP BEGIN at matrix.c(53,13) inlined into matrix.c(78,5)
-         remark #17107: loop was not parallelized: inner loop
-         remark #15389: vectorization support: reference A[i*2000+k] has unaligned access   [ matrix.c(55,29) ]
-         remark #15381: vectorization support: unaligned access used inside loop body
-         remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
-         remark #15328: vectorization support: non-unit strided load was emulated for the variable <B[k*2000+j]>, stride is 2000   [ matrix.c(55,44) ]
-         remark #15305: vectorization support: vector length 4
-         remark #15399: vectorization support: unroll factor set to 4
-         remark #15309: vectorization support: normalized vectorization overhead 0.207
-         remark #15450: unmasked unaligned unit stride loads: 1 
-         remark #15452: unmasked strided loads: 1 
-         remark #15475: --- begin vector cost summary ---
-         remark #15476: scalar cost: 8 
-         remark #15477: vector cost: 10.250 
-         remark #15478: estimated potential speedup: 0.770 
-         remark #15488: --- end vector cost summary ---
-         remark #25438: unrolled without remainder by 2  
-         remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
-         remark #25457: Number of partial sums replaced: 1
-         remark #25015: Estimate of max trip count of loop=2000
-      LOOP END
+   LOOP BEGIN at matrix.c(19,9) inlined into matrix.c(80,5)
+   <Remainder loop for vectorization>
+      remark #25015: Estimate of max trip count of loop=1000
+   LOOP END
+LOOP END
+
+LOOP BEGIN at matrix.c(24,5) inlined into matrix.c(80,5)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+   remark #25015: Estimate of max trip count of loop=1000
+
+   LOOP BEGIN at matrix.c(26,9) inlined into matrix.c(80,5)
+   <Peeled loop for vectorization>
+      remark #25015: Estimate of max trip count of loop=3
+   LOOP END
+
+   LOOP BEGIN at matrix.c(26,9) inlined into matrix.c(80,5)
+      remark #17107: loop was not parallelized: inner loop
+      remark #15388: vectorization support: reference B[i*1000+j] has aligned access   [ matrix.c(28,13) ]
+      remark #15305: vectorization support: vector length 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.132
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15442: entire loop may be executed in remainder
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 21 
+      remark #15477: vector cost: 19.000 
+      remark #15478: estimated potential speedup: 1.100 
+      remark #15482: vectorized math library calls: 1 
+      remark #15487: type converts: 1 
+      remark #15488: --- end vector cost summary ---
+      remark #25015: Estimate of max trip count of loop=250
+   LOOP END
+
+   LOOP BEGIN at matrix.c(26,9) inlined into matrix.c(80,5)
+   <Remainder loop for vectorization>
+      remark #25015: Estimate of max trip count of loop=1000
+   LOOP END
+LOOP END
+
+LOOP BEGIN at matrix.c(54,9) inlined into matrix.c(84,5)
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+   remark #25015: Estimate of max trip count of loop=1000
+
+   LOOP BEGIN at matrix.c(57,13) inlined into matrix.c(84,5)
+      remark #17107: loop was not parallelized: inner loop
+      remark #15389: vectorization support: reference A[i*1000+k] has unaligned access   [ matrix.c(59,29) ]
+      remark #15381: vectorization support: unaligned access used inside loop body
+      remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+      remark #15328: vectorization support: non-unit strided load was emulated for the variable <B[k*1000+j]>, stride is 1000   [ matrix.c(59,44) ]
+      remark #15305: vectorization support: vector length 4
+      remark #15399: vectorization support: unroll factor set to 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.207
+      remark #15450: unmasked unaligned unit stride loads: 1 
+      remark #15452: unmasked strided loads: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 8 
+      remark #15477: vector cost: 10.250 
+      remark #15478: estimated potential speedup: 0.770 
+      remark #15488: --- end vector cost summary ---
+      remark #25438: unrolled without remainder by 2  
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+      remark #25457: Number of partial sums replaced: 1
+      remark #25015: Estimate of max trip count of loop=1000
    LOOP END
 LOOP END
 
     Report from: Code generation optimizations [cg]
 
-matrix.c(66,1):remark #34051: REGISTER ALLOCATION : [main] matrix.c:66
+matrix.c(69,1):remark #34051: REGISTER ALLOCATION : [main] matrix.c:69
 
     Hardware registers
         Reserved     :    2[ rsp rip]
         Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
         Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   18[ rax rdx rcx rbx rsi rdi r8-r15 zmm0-zmm3]
+        Assigned     :   30[ rax rdx rcx rbx rsi rdi r8-r15 zmm0-zmm15]
         
     Routine temporaries
-        Total         :     216
-            Global    :      73
-            Local     :     143
-        Regenerable   :      80
-        Spilled       :       4
+        Total         :     568
+            Global    :     148
+            Local     :     420
+        Regenerable   :     157
+        Spilled       :      15
         
     Routine stack
-        Variables     :     100 bytes*
-            Reads     :       8 [1.22e+01 ~ 0.0%]
-            Writes    :      13 [0.00e+00 ~ 0.0%]
-        Spills        :      72 bytes*
-            Reads     :      14 [1.73e+01 ~ 0.0%]
-            Writes    :      14 [6.00e+00 ~ 0.0%]
+        Variables     :     168 bytes*
+            Reads     :      12 [4.05e+03 ~ 0.0%]
+            Writes    :      28 [0.00e+00 ~ 0.0%]
+        Spills        :     160 bytes*
+            Reads     :      37 [9.01e+03 ~ 0.0%]
+            Writes    :      38 [1.00e+04 ~ 0.0%]
     
     Notes
     
@@ -191,68 +333,172 @@ Begin optimization report for: generate_matrices()
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (generate_matrices()) [2/4=50.0%] matrix.c(11,26)
-  -> EXTERN: (14,5) srand(unsigned int)
-  -> EXTERN: (14,21) time(long long *)
-  -> EXTERN: (20,35) rand(void)
-  -> EXTERN: (27,35) rand(void)
+INLINE REPORT: (generate_matrices()) [2/4=50.0%] matrix.c(12,1)
+  -> EXTERN: (15,5) srand(unsigned int)
+  -> EXTERN: (15,21) time(long long *)
 
 
     Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
 
 
-LOOP BEGIN at matrix.c(16,5)
-   remark #17104: loop was not parallelized: existence of parallel dependence
-   remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (20:35) and call:rand(void) (20:35)
-   remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (20:35) and call:rand(void) (20:35)
-   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+LOOP BEGIN at matrix.c(17,5)
+   remark #17109: LOOP WAS AUTO-PARALLELIZED
+   remark #17101: parallel loop shared={ } private={ } firstprivate={ j A i } lastprivate={ } firstlastprivate={ } reduction={ }
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+   remark #25015: Estimate of max trip count of loop=1000
 
-   LOOP BEGIN at matrix.c(18,9)
-      remark #17104: loop was not parallelized: existence of parallel dependence
-      remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (20:35) and call:rand(void) (20:35)
-      remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (20:35) and call:rand(void) (20:35)
-      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix.c(20,35) ]
+   LOOP BEGIN at matrix.c(19,9)
+   <Peeled loop for vectorization>
+      remark #25015: Estimate of max trip count of loop=3
+   LOOP END
+
+   LOOP BEGIN at matrix.c(19,9)
+      remark #15388: vectorization support: reference A[i*1000+j] has aligned access   [ matrix.c(21,13) ]
+      remark #15305: vectorization support: vector length 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.132
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15442: entire loop may be executed in remainder
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 21 
+      remark #15477: vector cost: 19.000 
+      remark #15478: estimated potential speedup: 1.100 
+      remark #15482: vectorized math library calls: 1 
+      remark #15487: type converts: 1 
+      remark #15488: --- end vector cost summary ---
+      remark #25015: Estimate of max trip count of loop=250
+   LOOP END
+
+   LOOP BEGIN at matrix.c(19,9)
+   <Remainder loop for vectorization>
+      remark #25015: Estimate of max trip count of loop=1000
    LOOP END
 LOOP END
 
-LOOP BEGIN at matrix.c(23,5)
-   remark #17104: loop was not parallelized: existence of parallel dependence
-   remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (27:35) and call:rand(void) (27:35)
-   remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (27:35) and call:rand(void) (27:35)
-   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+LOOP BEGIN at matrix.c(24,5)
+   remark #17109: LOOP WAS AUTO-PARALLELIZED
+   remark #17101: parallel loop shared={ } private={ } firstprivate={ j B i } lastprivate={ } firstlastprivate={ } reduction={ }
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+   remark #25015: Estimate of max trip count of loop=1000
 
-   LOOP BEGIN at matrix.c(25,9)
-      remark #17104: loop was not parallelized: existence of parallel dependence
-      remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (27:35) and call:rand(void) (27:35)
-      remark #17106: parallel dependence: assumed OUTPUT dependence between call:rand(void) (27:35) and call:rand(void) (27:35)
-      remark #15527: loop was not vectorized: function call to rand(void) cannot be vectorized   [ matrix.c(27,35) ]
+   LOOP BEGIN at matrix.c(26,9)
+   <Peeled loop for vectorization>
+      remark #25015: Estimate of max trip count of loop=3
+   LOOP END
+
+   LOOP BEGIN at matrix.c(26,9)
+      remark #15388: vectorization support: reference B[i*1000+j] has aligned access   [ matrix.c(28,13) ]
+      remark #15305: vectorization support: vector length 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.132
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15442: entire loop may be executed in remainder
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 21 
+      remark #15477: vector cost: 19.000 
+      remark #15478: estimated potential speedup: 1.100 
+      remark #15482: vectorized math library calls: 1 
+      remark #15487: type converts: 1 
+      remark #15488: --- end vector cost summary ---
+      remark #25015: Estimate of max trip count of loop=250
+   LOOP END
+
+   LOOP BEGIN at matrix.c(26,9)
+   <Remainder loop for vectorization>
+      remark #25015: Estimate of max trip count of loop=1000
+   LOOP END
+LOOP END
+
+LOOP BEGIN at matrix.c(17,5)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+   remark #25015: Estimate of max trip count of loop=1000
+
+   LOOP BEGIN at matrix.c(19,9)
+   <Peeled loop for vectorization>
+      remark #25015: Estimate of max trip count of loop=3
+   LOOP END
+
+   LOOP BEGIN at matrix.c(19,9)
+      remark #17107: loop was not parallelized: inner loop
+      remark #15388: vectorization support: reference A[i*1000+j] has aligned access   [ matrix.c(21,13) ]
+      remark #15305: vectorization support: vector length 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.132
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15442: entire loop may be executed in remainder
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 21 
+      remark #15477: vector cost: 19.000 
+      remark #15478: estimated potential speedup: 1.100 
+      remark #15482: vectorized math library calls: 1 
+      remark #15487: type converts: 1 
+      remark #15488: --- end vector cost summary ---
+      remark #25015: Estimate of max trip count of loop=250
+   LOOP END
+
+   LOOP BEGIN at matrix.c(19,9)
+   <Remainder loop for vectorization>
+      remark #25015: Estimate of max trip count of loop=1000
+   LOOP END
+LOOP END
+
+LOOP BEGIN at matrix.c(24,5)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+   remark #25015: Estimate of max trip count of loop=1000
+
+   LOOP BEGIN at matrix.c(26,9)
+   <Peeled loop for vectorization>
+      remark #25015: Estimate of max trip count of loop=3
+   LOOP END
+
+   LOOP BEGIN at matrix.c(26,9)
+      remark #17107: loop was not parallelized: inner loop
+      remark #15388: vectorization support: reference B[i*1000+j] has aligned access   [ matrix.c(28,13) ]
+      remark #15305: vectorization support: vector length 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.132
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15442: entire loop may be executed in remainder
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 21 
+      remark #15477: vector cost: 19.000 
+      remark #15478: estimated potential speedup: 1.100 
+      remark #15482: vectorized math library calls: 1 
+      remark #15487: type converts: 1 
+      remark #15488: --- end vector cost summary ---
+      remark #25015: Estimate of max trip count of loop=250
+   LOOP END
+
+   LOOP BEGIN at matrix.c(26,9)
+   <Remainder loop for vectorization>
+      remark #25015: Estimate of max trip count of loop=1000
    LOOP END
 LOOP END
 
     Report from: Code generation optimizations [cg]
 
-matrix.c(11,26):remark #34051: REGISTER ALLOCATION : [generate_matrices] matrix.c:11
+matrix.c(12,1):remark #34051: REGISTER ALLOCATION : [generate_matrices] matrix.c:12
 
     Hardware registers
         Reserved     :    2[ rsp rip]
         Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
         Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   12[ rax rdx rcx rbx rbp rdi r13-r15 zmm0-zmm2]
+        Assigned     :   23[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0-zmm4 zmm8-zmm10]
         
     Routine temporaries
-        Total         :      43
-            Global    :      27
-            Local     :      16
-        Regenerable   :       7
-        Spilled       :       5
+        Total         :     363
+            Global    :      87
+            Local     :     276
+        Regenerable   :      77
+        Spilled       :      10
         
     Routine stack
-        Variables     :       8 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Variables     :      72 bytes*
+            Reads     :       4 [4.00e+03 ~ 0.0%]
+            Writes    :      14 [0.00e+00 ~ 0.0%]
+        Spills        :     128 bytes*
+            Reads     :      28 [7.21e+03 ~ 0.0%]
+            Writes    :      28 [8.01e+03 ~ 0.0%]
     
     Notes
     
@@ -266,30 +512,30 @@ Begin optimization report for: print_matrice(float *, int, int)
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (print_matrice(float *, int, int)) [3/4=75.0%] matrix.c(32,45)
-  -> EXTERN: (38,13) printf(const char *__restrict__, ...)
-  -> EXTERN: (40,9) printf(const char *__restrict__, ...)
+INLINE REPORT: (print_matrice(float *, int, int)) [3/4=75.0%] matrix.c(34,1)
+  -> EXTERN: (40,13) printf(const char *__restrict__, ...)
+  -> EXTERN: (42,9) printf(const char *__restrict__, ...)
 
 
     Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
 
 
-LOOP BEGIN at matrix.c(34,5)
+LOOP BEGIN at matrix.c(36,5)
    remark #17104: loop was not parallelized: existence of parallel dependence
-   remark #17106: parallel dependence: assumed OUTPUT dependence between call:printf(const char *__restrict__, ...) (38:13) and call:printf(const char *__restrict__, ...) (40:9)
-   remark #17106: parallel dependence: assumed OUTPUT dependence between call:printf(const char *__restrict__, ...) (40:9) and call:printf(const char *__restrict__, ...) (38:13)
+   remark #17106: parallel dependence: assumed OUTPUT dependence between call:printf(const char *__restrict__, ...) (40:13) and call:printf(const char *__restrict__, ...) (42:9)
+   remark #17106: parallel dependence: assumed OUTPUT dependence between call:printf(const char *__restrict__, ...) (42:9) and call:printf(const char *__restrict__, ...) (40:13)
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
 
-   LOOP BEGIN at matrix.c(36,9)
+   LOOP BEGIN at matrix.c(38,9)
       remark #17104: loop was not parallelized: existence of parallel dependence
-      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ matrix.c(38,13) ]
+      remark #15382: vectorization support: call to function printf(const char *__restrict__, ...) cannot be vectorized   [ matrix.c(40,13) ]
       remark #15344: loop was not vectorized: vector dependence prevents vectorization
    LOOP END
 LOOP END
 
     Report from: Code generation optimizations [cg]
 
-matrix.c(32,45):remark #34051: REGISTER ALLOCATION : [print_matrice] matrix.c:32
+matrix.c(34,1):remark #34051: REGISTER ALLOCATION : [print_matrice] matrix.c:34
 
     Hardware registers
         Reserved     :    2[ rsp rip]
@@ -324,27 +570,27 @@ Begin optimization report for: multiply_matrices(float *, float *, float *, int,
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (multiply_matrices(float *, float *, float *, int, int, int)) [4/4=100.0%] matrix.c(44,78)
+INLINE REPORT: (multiply_matrices(float *, float *, float *, int, int, int)) [4/4=100.0%] matrix.c(47,1)
 
 
     Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
 
 
-LOOP BEGIN at matrix.c(47,5)
-   remark #17109: LOOP WAS AUTO-PARALLELIZED
-   remark #17101: parallel loop shared={ } private={ } firstprivate={ k j sum B A C i } lastprivate={ } firstlastprivate={ } reduction={ }
+LOOP BEGIN at matrix.c(51,5)
+   remark #17103: loop was not parallelized: noparallel directive 
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
-   remark #25015: Estimate of max trip count of loop=2000
 
-   LOOP BEGIN at matrix.c(50,9)
+   LOOP BEGIN at matrix.c(54,9)
+      remark #17109: LOOP WAS AUTO-PARALLELIZED
+      remark #17101: parallel loop shared={ } private={ } firstprivate={ k sum B A C j i } lastprivate={ } firstlastprivate={ } reduction={ }
       remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
-      remark #25015: Estimate of max trip count of loop=2000
+      remark #25015: Estimate of max trip count of loop=1000
 
-      LOOP BEGIN at matrix.c(53,13)
-         remark #15389: vectorization support: reference A[i*2000+k] has unaligned access   [ matrix.c(55,29) ]
+      LOOP BEGIN at matrix.c(57,13)
+         remark #15389: vectorization support: reference A[i*1000+k] has unaligned access   [ matrix.c(59,29) ]
          remark #15381: vectorization support: unaligned access used inside loop body
          remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
-         remark #15328: vectorization support: non-unit strided load was emulated for the variable <B[k*2000+j]>, stride is 2000   [ matrix.c(55,44) ]
+         remark #15328: vectorization support: non-unit strided load was emulated for the variable <B[k*1000+j]>, stride is 1000   [ matrix.c(59,44) ]
          remark #15305: vectorization support: vector length 4
          remark #15399: vectorization support: unroll factor set to 4
          remark #15309: vectorization support: normalized vectorization overhead 0.207
@@ -358,47 +604,41 @@ LOOP BEGIN at matrix.c(47,5)
          remark #25438: unrolled without remainder by 2  
          remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
          remark #25457: Number of partial sums replaced: 1
-         remark #25015: Estimate of max trip count of loop=2000
+         remark #25015: Estimate of max trip count of loop=1000
       LOOP END
    LOOP END
 LOOP END
 
-LOOP BEGIN at matrix.c(47,5)
+LOOP BEGIN at matrix.c(54,9)
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
-   remark #25015: Estimate of max trip count of loop=2000
+   remark #25015: Estimate of max trip count of loop=1000
 
-   LOOP BEGIN at matrix.c(50,9)
+   LOOP BEGIN at matrix.c(57,13)
       remark #17107: loop was not parallelized: inner loop
-      remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
-      remark #25015: Estimate of max trip count of loop=2000
-
-      LOOP BEGIN at matrix.c(53,13)
-         remark #17107: loop was not parallelized: inner loop
-         remark #15389: vectorization support: reference A[i*2000+k] has unaligned access   [ matrix.c(55,29) ]
-         remark #15381: vectorization support: unaligned access used inside loop body
-         remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
-         remark #15328: vectorization support: non-unit strided load was emulated for the variable <B[k*2000+j]>, stride is 2000   [ matrix.c(55,44) ]
-         remark #15305: vectorization support: vector length 4
-         remark #15399: vectorization support: unroll factor set to 4
-         remark #15309: vectorization support: normalized vectorization overhead 0.207
-         remark #15450: unmasked unaligned unit stride loads: 1 
-         remark #15452: unmasked strided loads: 1 
-         remark #15475: --- begin vector cost summary ---
-         remark #15476: scalar cost: 8 
-         remark #15477: vector cost: 10.250 
-         remark #15478: estimated potential speedup: 0.770 
-         remark #15488: --- end vector cost summary ---
-         remark #25438: unrolled without remainder by 2  
-         remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
-         remark #25457: Number of partial sums replaced: 1
-         remark #25015: Estimate of max trip count of loop=2000
-      LOOP END
+      remark #15389: vectorization support: reference A[i*1000+k] has unaligned access   [ matrix.c(59,29) ]
+      remark #15381: vectorization support: unaligned access used inside loop body
+      remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+      remark #15328: vectorization support: non-unit strided load was emulated for the variable <B[k*1000+j]>, stride is 1000   [ matrix.c(59,44) ]
+      remark #15305: vectorization support: vector length 4
+      remark #15399: vectorization support: unroll factor set to 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.207
+      remark #15450: unmasked unaligned unit stride loads: 1 
+      remark #15452: unmasked strided loads: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 8 
+      remark #15477: vector cost: 10.250 
+      remark #15478: estimated potential speedup: 0.770 
+      remark #15488: --- end vector cost summary ---
+      remark #25438: unrolled without remainder by 2  
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+      remark #25457: Number of partial sums replaced: 1
+      remark #25015: Estimate of max trip count of loop=1000
    LOOP END
 LOOP END
 
     Report from: Code generation optimizations [cg]
 
-matrix.c(44,78):remark #34051: REGISTER ALLOCATION : [multiply_matrices] matrix.c:44
+matrix.c(47,1):remark #34051: REGISTER ALLOCATION : [multiply_matrices] matrix.c:47
 
     Hardware registers
         Reserved     :    2[ rsp rip]
@@ -407,19 +647,19 @@ matrix.c(44,78):remark #34051: REGISTER ALLOCATION : [multiply_matrices] matrix.
         Assigned     :   19[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0-zmm3]
         
     Routine temporaries
-        Total         :     130
-            Global    :      47
-            Local     :      83
-        Regenerable   :      39
+        Total         :     123
+            Global    :      41
+            Local     :      82
+        Regenerable   :      37
         Spilled       :       3
         
     Routine stack
-        Variables     :      56 bytes*
-            Reads     :       2 [8.20e+00 ~ 0.4%]
-            Writes    :      11 [0.00e+00 ~ 0.0%]
+        Variables     :      60 bytes*
+            Reads     :       2 [4.50e+01 ~ 1.8%]
+            Writes    :      12 [0.00e+00 ~ 0.0%]
         Spills        :      72 bytes*
-            Reads     :      15 [1.42e+01 ~ 0.7%]
-            Writes    :      15 [4.00e+00 ~ 0.2%]
+            Reads     :      16 [6.00e+00 ~ 0.2%]
+            Writes    :      17 [2.00e+00 ~ 0.1%]
     
     Notes
     
